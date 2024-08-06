@@ -59,7 +59,7 @@ const generateWhatsAppUrl = (
 	orderId: string,
 	values: z.infer<typeof formSchema>
 ) => {
-	const mainMessage = `Hey There! I wanted to place a new order.${newLineChar}Name: ${values.name}${newLineChar}Number: ${values.phone}${newLineChar}Address: ${values.flat}, ${values.floor}, ${values.area}, ${values.landmark}${newLineChar}Notes: ${values.notes}${newLineChar}Order: ${orderId}`;
+	const mainMessage = `Hey There! I wanted to place a new order.${newLineChar}Name: ${values.name}${newLineChar}Number: ${values.phone}${newLineChar}Address: ${values.flat}, ${values.floor}, ${values.area}, ${values.landmark}${newLineChar}Notes: ${values.notes}${newLineChar}Order: ${links.siteAddress}/orders/${orderId}`;
 
 	return `${links.whatsAppApiUrl}?phone=${siteConfig.adminPhoneNumber}&text=${mainMessage}`;
 };
@@ -77,13 +77,13 @@ export default function CartSheet() {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			name: 'Mayank Soni',
-			phone: '7073732435',
-			flat: '123',
-			floor: '2nd Floor',
-			area: 'Jodhpur',
-			landmark: 'Behind School',
-			notes: "Please don't ring the bell"
+			name: '',
+			phone: '',
+			flat: '',
+			floor: '',
+			area: '',
+			landmark: '',
+			notes: ''
 		}
 	});
 
@@ -94,6 +94,7 @@ export default function CartSheet() {
 				const product = item.product;
 				const itemDetails = {
 					product: product.id,
+					price: product.price,
 					quantity: item.quantity
 				};
 				return itemDetails;
@@ -125,7 +126,7 @@ export default function CartSheet() {
 				);
 				router.push(whatsAppUrl);
 			}
-		} catch (error) {
+		} catch (error: any) {
 			if (error?.response) {
 				console.log('error', error?.response?.data?.message);
 			}

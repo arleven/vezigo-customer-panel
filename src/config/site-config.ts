@@ -6,7 +6,8 @@ export const apiUrl: string = process.env.NEXT_PUBLIC_API_URL as string;
 
 export const links = {
 	rickroll: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-	whatsAppApiUrl: 'https://api.whatsapp.com/send'
+	whatsAppApiUrl: 'https://api.whatsapp.com/send',
+	siteAddress: process.env.NEXT_PUBLIC_SITE_ADDRESS as string
 };
 
 export const sortOptions = [

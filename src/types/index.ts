@@ -42,6 +42,30 @@ export interface Product {
 	imageUrl: string;
 }
 
+export interface OrderItem {
+	product: Product;
+	price: string;
+	quantity: number;
+}
+
+export interface Order {
+	id: string;
+	userDetails: {
+		name: string;
+		phoneNumber: string;
+		address: {
+			flat: string;
+			floor: string;
+			area: string;
+			landmark: string;
+		};
+		notes: string;
+	};
+	items: [OrderItem];
+	billAmount: string;
+	createdAt: string;
+}
+
 export interface CartItem {
 	product: Product;
 	quantity: number;
