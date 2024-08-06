@@ -13,7 +13,8 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
 	title: 'Vezigo',
-	description: 'Discover the best and fresh vegetables for all your needs'
+	description:
+		'Discover the best and fresh fruits and vegetables for all your needs'
 };
 
 export default function RootLayout({
@@ -25,7 +26,11 @@ export default function RootLayout({
 		<CartProvider>
 			<html lang='en'>
 				<head>
-					<link rel='icon' href='/favicon.ico' sizes='any' />
+					<link
+						rel='icon'
+						href='/favicon.ico?refresh=1'
+						sizes='any'
+					/>
 				</head>
 				<body className={poppins.className}>
 					<ThemeProvider
