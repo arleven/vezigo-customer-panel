@@ -1,25 +1,25 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import * as React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-import { ProductCard } from "./product-card";
-import { PaginationButton } from "./pagination-button";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Product } from "@/types";
-import { Button } from "./ui/button";
+import { ProductCard } from './product-card';
+import { PaginationButton } from './pagination-button';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { Product } from '@/types';
+import { Button } from './ui/button';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
-import { Icons } from "./icons";
-import { sortOptions } from "@/config/site-config";
-import { cn } from "@/lib/utils";
-import { setTransition } from "@/lib/transition";
+	DropdownMenuTrigger
+} from './ui/dropdown-menu';
+import { Icons } from './icons';
+import { sortOptions } from '@/config/site-config';
+import { cn } from '@/lib/utils';
+import { setTransition } from '@/lib/transition';
 
 interface ProductsProps {
 	products: Product[];
@@ -35,14 +35,16 @@ export function Products({ products, pageCount }: ProductsProps) {
 	const searchParams = useSearchParams();
 
 	// Search params
-	const page = searchParams?.get("page") ?? "1";
-	const limit = searchParams?.get("limit") ?? "8";
-	const sort = searchParams?.get("sort") ?? "";
+	const page = searchParams?.get('page') ?? '1';
+	const limit = searchParams?.get('limit') ?? '8';
+	const sort = searchParams?.get('sort') ?? '';
 
 	// Create query string
 	const createQueryString = React.useCallback(
 		(params: Record<string, string | number | null>) => {
-			const newSearchParams = new URLSearchParams(searchParams?.toString());
+			const newSearchParams = new URLSearchParams(
+				searchParams?.toString()
+			);
 
 			for (const [key, value] of Object.entries(params)) {
 				if (value === null) {
@@ -62,11 +64,11 @@ export function Products({ products, pageCount }: ProductsProps) {
 			<motion.div
 				key={sort}
 				{...setTransition({
-					typeIn: "spring",
+					typeIn: 'spring',
 					duration: 0.5,
-					distanceY: -50,
+					distanceY: -50
 				})}
-				className="flex flex-col space-y-6"
+				className='flex flex-col space-y-6'
 			>
 				{/* <div className="flex items-center space-x-2">
 					<DropdownMenu>
@@ -101,16 +103,17 @@ export function Products({ products, pageCount }: ProductsProps) {
 					</DropdownMenu>
 				</div> */}
 				{!products.length ? (
-					<div className="mx-auto flex max-w-xs flex-col space-y-1 5">
-						<h1 className="text-center text-2xl font-bold">
+					<div className='mx-auto flex max-w-xs flex-col space-y-1 5'>
+						<h1 className='text-center text-2xl font-bold'>
 							No products found
 						</h1>
-						<p className="text-center text-muted-foreground">
-							Try changing your filters, or check back later for new products
+						<p className='text-center text-muted-foreground'>
+							Try changing your filters, or check back later for
+							new products
 						</p>
 					</div>
 				) : null}
-				<div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+				<div className='grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
 					{products.map((product) => (
 						<ProductCard key={product.id} product={product} />
 					))}
