@@ -45,7 +45,11 @@ interface OrderPageProps {
 export default async function OrderPage({ params }: OrderPageProps) {
 	const { orderId } = params;
 	const order = (await getOrder(orderId)) as Order;
-	const orderDate = order.createdAt.split('T')[0];
+	const orderDate = new Date(order.createdAt).toLocaleString([], {
+		dateStyle: 'medium',
+		timeStyle: 'medium'
+	});
+
 	const billAmount = formatPrice(Number(order.billAmount), 'INR');
 
 	return (
