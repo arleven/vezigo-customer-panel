@@ -25,7 +25,6 @@ export function MobileNav({ mainNavItems }: MobileNavProps) {
 					className='mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 lg:hidden'
 				>
 					<Icons.menu className='h-6 w-6' />
-					<span className='sr-only'>Toggle Menu</span>
 				</Button>
 			</SheetTrigger>
 			<SheetContent side='left' className='pl-1 pr-0'>
@@ -50,7 +49,10 @@ export function MobileNav({ mainNavItems }: MobileNavProps) {
 								item.href && (
 									<React.Fragment key={index}>
 										<div className='flex flex-1 items-center justify-between py-4 font-medium text-sm transition-all hover:underline hover:cursor-pointer'>
-											<Link href={item.href}>
+											<Link
+												href={item.href}
+												onClick={() => setIsOpen(false)}
+											>
 												{item.title}
 											</Link>
 										</div>
