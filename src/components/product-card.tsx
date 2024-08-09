@@ -54,10 +54,7 @@ export function ProductCard({
 
 	return (
 		<Card
-			className={cn(
-				'h-full overflow-hidden rounded-3xl  bg-white p-2',
-				className
-			)}
+			className={cn('h-full rounded-3xl  bg-white p-2', className)}
 			{...props}
 		>
 			{/* eslint-disable-next-line @next/next/no-img-element */}
@@ -68,7 +65,7 @@ export function ProductCard({
 				loading='lazy'
 			/>
 			<CardContent className='grid gap-2.5 p-2'>
-				<CardTitle className='line-clamp-1 text-base'>
+				<CardTitle className='text-base'>
 					{product.title}
 					<CardDescription className='line-clamp-2'>
 						{formatPrice(Number(product?.price), product?.currency)}

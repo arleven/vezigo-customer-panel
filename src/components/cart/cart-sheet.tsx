@@ -142,21 +142,23 @@ export default function CartSheet() {
 					size='icon'
 					className={cn(
 						'relative',
-						itemCount > 0 ? 'bg-green-500 hover:bg-green-600' : ''
+						cartItems.length > 0
+							? 'bg-green-500 hover:bg-green-600'
+							: ''
 					)}
 				>
-					{itemCount > 0 && (
+					{cartItems.length > 0 && (
 						<Badge
 							variant='secondary'
 							className='absolute -right-2 -top-2 g-6 w-6 h-6 rounded-full p-2'
 						>
-							{itemCount}
+							{cartItems.length}
 						</Badge>
 					)}
 					<Icons.shoppingCart
 						className={cn(
 							'h-4 w-4',
-							itemCount > 0 ? 'text-white' : ''
+							cartItems.length > 0 ? 'text-white' : ''
 						)}
 						aria-hidden='true'
 					/>
@@ -165,11 +167,11 @@ export default function CartSheet() {
 			<SheetContent className='flex w-full flex-col pr-0 sm:max-w-lg'>
 				<SheetHeader className='px-1'>
 					<SheetTitle>
-						Cart {itemCount > 0 && `(${itemCount})`}
+						Cart {cartItems.length > 0 && `(${cartItems.length})`}
 					</SheetTitle>
 				</SheetHeader>
 				<Separator />
-				{itemCount >= 0 ? (
+				{cartItems.length >= 0 ? (
 					<div className='flex flex-1 flex-col gap-5 overflow-hidden'>
 						<ScrollArea className='h-full'>
 							<div className='flex flex-col gap-5 pr-6 overflow-visible'>
