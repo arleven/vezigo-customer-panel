@@ -1,5 +1,12 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+
+const buildRedirect = (source, destination, permanent = true) => {
+	return {
+		source,
+		destination,
+		permanent
+	};
+};
 
 module.exports = {
 	distDir: 'build',
@@ -13,5 +20,8 @@ module.exports = {
 	},
 	typescript: {
 		ignoreBuildErrors: true
+	},
+	async redirects() {
+		return [buildRedirect('/', '/vegetables')];
 	}
 };

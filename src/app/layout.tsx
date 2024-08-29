@@ -1,6 +1,7 @@
 import '@/styles/globals.css';
 
 import { ThemeProvider } from '@/components/theme-provider';
+
 import type { Metadata } from 'next';
 import { CartProvider } from '@/context/cart-context';
 
@@ -33,11 +34,7 @@ export default function RootLayout({
 					/>
 				</head>
 				<body className={poppins.className}>
-					<ThemeProvider
-						attribute='class'
-						defaultTheme='system'
-						enableSystem
-					>
+					<ThemeProvider attribute='class' defaultTheme='light'>
 						{children}
 					</ThemeProvider>
 				</body>
