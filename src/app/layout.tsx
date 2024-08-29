@@ -6,6 +6,7 @@ import type { Metadata } from 'next';
 import { CartProvider } from '@/context/cart-context';
 
 import { Poppins } from 'next/font/google';
+import { cn } from '@/lib/utils';
 
 const poppins = Poppins({
 	weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
@@ -33,7 +34,7 @@ export default function RootLayout({
 						sizes='any'
 					/>
 				</head>
-				<body className={poppins.className}>
+				<body className={cn('bg-gray-100', poppins.className)}>
 					<ThemeProvider attribute='class' defaultTheme='light'>
 						{children}
 					</ThemeProvider>

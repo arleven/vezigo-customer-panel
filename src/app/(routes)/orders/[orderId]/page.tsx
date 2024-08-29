@@ -52,8 +52,6 @@ export default async function OrderPage({ params }: OrderPageProps) {
 
 	const billAmount = formatPrice(Number(order.billAmount), 'INR');
 
-	console.log('items', order.items);
-
 	return (
 		<Shell as='div' className='gap-12'>
 			<main className='flex flex-1 flex-col gap-4 md:gap-8'>
