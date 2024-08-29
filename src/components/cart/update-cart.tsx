@@ -15,38 +15,53 @@ export function CartItemActions({ item }: CartItemActionsProps) {
 	const handleQuantityChange = (qty: number) => {
 		const quantity = Number(qty);
 		if (quantity >= 1) {
-			updateCartItemQuantity(item.product.id, quantity);
+			updateCartItemQuantity(item.pack._id, quantity);
 		}
 	};
 
 	const handleRemoveClick = () => {
-		removeFromCart(item.product.id);
+		removeFromCart(item.pack._id);
 	};
 
 	return (
 		<div className='flex items-center space-x-1'>
-			<div className="flex items-center space-x-1">
-				<Button variant="outline" size="icon" className='h-8 w-8' onClick={() => {
-					handleQuantityChange(item.quantity - 1);
-				}}>
+			<div className='flex items-center space-x-1'>
+				<Button
+					variant='outline'
+					size='icon'
+					className='h-8 w-8'
+					onClick={() => {
+						handleQuantityChange(item.quantity - 1);
+					}}
+				>
 					{'-'}
 				</Button>
 			</div>
 			<Input
-				className='h-8 w-14 text-xs'
-				type="number"
-				min="1"
+				className='h-8 w-14 text-base'
+				type='number'
+				min='1'
 				value={item.quantity}
 				onChange={(e) => {
 					handleQuantityChange(Number(e.target.value));
 				}}
 			/>
-			<Button variant="outline" size="icon" className='h-8 w-8' onClick={() => {
-				handleQuantityChange(item.quantity + 1);
-			}}>
+			<Button
+				variant='outline'
+				size='icon'
+				className='h-8 w-8'
+				onClick={() => {
+					handleQuantityChange(item.quantity + 1);
+				}}
+			>
 				{'+'}
 			</Button>
-			<Button variant="outline" size="icon" className='h-8 w-8' onClick={handleRemoveClick}>
+			<Button
+				variant='outline'
+				size='icon'
+				className='sm:h-8 sm:w-8 h-6 w-6'
+				onClick={handleRemoveClick}
+			>
 				<Icons.trash className='h-4 w-4' />
 			</Button>
 		</div>
