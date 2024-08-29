@@ -19,9 +19,10 @@ import { Separator } from '@/components/ui/separator';
 import { Shell } from '@/components/Shells/shell';
 import Image from 'next/image';
 import { Order, OrderItem } from '@/types';
-import { apiUrl } from '@/config/site-config';
+import { apiUrl, links, siteConfig } from '@/config/site-config';
 import axios from 'axios';
 import { formatPrice } from '@/lib/utils';
+import { MessagesSquare } from 'lucide-react';
 
 async function getOrder(orderId: string): Promise<Order> {
 	try {
@@ -134,6 +135,7 @@ export default async function OrderPage({ params }: OrderPageProps) {
 					</div>
 				</div>
 			</main>
+			<FloatingChatButton orderId={orderId} />
 		</Shell>
 	);
 }
@@ -198,5 +200,19 @@ const CustomerDetailsCard = (props: { order: Order }) => {
 				</CardContent>
 			</div>
 		</Card>
+	);
+};
+
+const FloatingChatButton = (props: { orderId: string }) => {
+	return (
+		<div className='fixed bottom-4 right-4'>
+			<Link
+				className='bg-green-500 hover:bg-green-600 text-white rounded-full py-3 px-4 shadow-lg inline-flex items-center gap-2 font-bold'
+				href={`${links.whatsAppApiUrl}?phone=${siteConfig.adminPhoneNumber}&text=Hi, I had query about order ID: ${props.orderId}`}
+			>
+				<MessagesSquare className='w-6 h-6' />
+				Chat
+			</Link>
+		</div>
 	);
 };
