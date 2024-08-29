@@ -46,6 +46,7 @@ import { apiUrl, links, siteConfig } from '@/config/site-config';
 const formSchema = z.object({
 	name: z.string().min(2, 'Your name is required').max(50),
 	phone: z.string().min(2, 'Your phone is required').max(50),
+	altPhone: z.string().max(50),
 	address: z.string().min(2, 'Your address is required').max(200),
 	notes: z.string().max(200).trim().optional()
 });
@@ -56,7 +57,7 @@ const generateWhatsAppUrl = (
 	orderId: string,
 	values: z.infer<typeof formSchema>
 ) => {
-	const mainMessage = `Hey There! I wanted to place a new order.${newLineChar}Name: ${values.name}${newLineChar}Number: ${values.phone}${newLineChar}Address: ${values.address}${newLineChar}Notes: ${values.notes}${newLineChar}Order: ${links.siteAddress}/orders/${orderId}`;
+	const mainMessage = `Hey There! I wanted to place a new order.${newLineChar}Name: ${values.name}${newLineChar}Number: ${values.phone}${newLineChar}Alt. Phone Number: ${values.altPhone}${newLineChar}Address: ${values.address}${newLineChar}Notes: ${values.notes}${newLineChar}Order: ${links.siteAddress}/orders/${orderId}`;
 
 	return `${links.whatsAppApiUrl}?phone=${siteConfig.adminPhoneNumber}&text=${mainMessage}`;
 };
@@ -103,6 +104,7 @@ export default function CartSheet() {
 				billAmount: cartAmount,
 				userDetails: {
 					name: values.name,
+					altPhoneNumber: values.altPhone,
 					phoneNumber: values.phone,
 					address: values.address,
 					notes: values.notes
@@ -112,9 +114,7 @@ export default function CartSheet() {
 			const res: any = await axios.post(`${apiUrl}/orders`, orderDetails);
 			const response = await res.data;
 
-			console.log('response.data.id', response.data.id);
-
-			/* if (response.code === 201) {
+			if (response.code === 201) {
 				const whatsAppUrl = generateWhatsAppUrl(
 					response.data.id,
 					values
@@ -122,7 +122,7 @@ export default function CartSheet() {
 
 				window.open(whatsAppUrl, '_blank');
 				router.push(`${links.siteAddress}/orders/${response.data.id}`);
-			} */
+			}
 		} catch (error: any) {
 			if (error?.response) {
 				console.log('error', error?.response?.data?.message);
@@ -260,6 +260,30 @@ export default function CartSheet() {
 														<FormItem>
 															<FormLabel className='text-xs'>
 																Phone Number
+															</FormLabel>
+															<FormControl>
+																<Input
+																	placeholder='9876543210'
+																	type='number'
+																	{...field}
+																	className='h-8 text-base'
+																	disabled={
+																		loading
+																	}
+																/>
+															</FormControl>
+															<FormMessage className='text-xs' />
+														</FormItem>
+													)}
+												/>
+												<FormField
+													control={form.control}
+													name='altPhone'
+													render={({ field }) => (
+														<FormItem>
+															<FormLabel className='text-xs'>
+																Alternate Phone
+																Number
 															</FormLabel>
 															<FormControl>
 																<Input
