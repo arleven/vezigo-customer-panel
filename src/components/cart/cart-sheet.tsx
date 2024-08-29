@@ -167,26 +167,40 @@ export default function CartSheet() {
 					</SheetTitle>
 				</SheetHeader>
 				<Separator />
-				{cartItems.length >= 0 ? (
+				{cartItems.length > 0 ? (
 					<div className='flex flex-1 flex-col gap-5 overflow-hidden'>
 						<ScrollArea className='h-full'>
-							<div className='flex flex-col gap-5 pr-6 overflow-visible'>
-								{cartItems.map((item) => (
-									<div
-										key={item.product.id}
-										className='space-y-3'
-									>
-										<CartItem item={item} />
+							<div className='flex flex-col gap-1 pr-6 overflow-visible'>
+								{cartItems.map((item, index) => (
+									<div key={item.pack._id}>
+										<div className='space-y-3'>
+											<CartItem item={item} />
+										</div>
+										{cartItems.length !== index + 1 && (
+											<Separator className='mt-2' />
+										)}
 									</div>
 								))}
 							</div>
 						</ScrollArea>
 
+						<div className='flex items-center space-x-1 pl-1 pr-7'>
+							<Button
+								className='items-center w-full'
+								type='button'
+								variant={'outline'}
+								disabled={cartAmount <= 0}
+								onClick={emptyCart}
+							>
+								Empty Cart
+							</Button>
+						</div>
+
 						<Dialog>
-							<div className='flex items-center space-x-4 pl-1 pr-6'>
+							<div className='flex items-center space-x-1 pl-1 pr-7'>
 								<DialogTrigger asChild>
 									<Button
-										className='bg-green-500 hover:bg-green-600 text-white items-center w-full mb-1'
+										className='bg-green-500 hover:bg-green-600 text-white items-center w-full mb-1 rounded-lg'
 										type='button'
 										disabled={cartAmount <= 0}
 									>

@@ -1,11 +1,10 @@
 'use client';
 
 import { cn, formatPrice } from '@/lib/utils';
-import type { Product } from '@/types';
+import type { Package, Product } from '@/types';
 
 import * as React from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 
 import { AspectRatio } from './ui/aspect-ratio';
 import { Icons } from './icons';
@@ -21,6 +20,17 @@ import {
 import { useCart } from '@/context/cart-context';
 import { Input } from './ui/input';
 import { CartItemActions } from './cart/update-cart';
+import { map } from 'zod';
+import {
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger
+} from './ui/dialog';
 
 interface ProductCardProps extends React.HTMLAttributes<HTMLDivElement> {
 	product: Product;
@@ -42,19 +52,32 @@ export function ProductCard({
 	const { addToCart, cartItems, updateCartItemQuantity, removeFromCart } =
 		useCart();
 
-	const [quantity, setQuantity] = React.useState(1);
+	const [quantity, setQuantity] = React.useState(0);
+	// const [productInCart, setProductInCart] = React.useState('');
 
-	const handleAddToCart = (product: Product) => {
-		addToCart(product);
+	const handleAddToCart = (pack: Package, product: Product) => {
+		addToCart(pack, product);
 	};
 
-	const isProductInCart = cartItems.some(
-		(item) => item.product.id === product.id
-	);
+	/* const isProductInCart = cartItems.some((item) => {
+		if (item.product.id === product.id) {
+			// setProductInCart(item.product.id);
+			return item.product.id === product.id;
+		}
+	}); */
+
+	/* React.useEffect(() => {
+		if (isProductInCart) {
+			console.log(isProductInCart, productInCart);
+		}
+	}, [isProductInCart]); */
 
 	return (
 		<Card
-			className={cn('h-full rounded-3xl  bg-white p-2', className)}
+			className={cn(
+				'h-full rounded-3xl shadow-sm hover:shadow-md hover:shadow-green-200 bg-white p-2',
+				className
+			)}
 			{...props}
 		>
 			{/* eslint-disable-next-line @next/next/no-img-element */}
@@ -68,19 +91,18 @@ export function ProductCard({
 				<CardTitle className='text-base'>
 					{product.title}
 					<CardDescription className='line-clamp-2'>
-						{formatPrice(Number(product?.price), product?.currency)}
-						/{product.unit.toUpperCase()}
+						{`₹${product?.marketPrice?.toUpperCase()}`}
 					</CardDescription>
 				</CardTitle>
 			</CardContent>
 			{showCartButton && (
 				<CardFooter className='p-1'>
 					<div className='flex w-full flex-col items-center gap-2 sm:flex-row sm:justify-between'>
-						{isProductInCart ? (
+						{/* {isProductInCart ? (
 							<div className='w-full'>
 								<div className='flex items-center space-x-1'>
 									<Input
-										className='h-8 w-full text-sm rounded-xl'
+										className='h-8 w-full text-base rounded-xl'
 										type='number'
 										min='1'
 										value={quantity}
@@ -92,6 +114,7 @@ export function ProductCard({
 											);
 										}}
 									/>
+
 									<Button
 										variant='outline'
 										size='icon'
@@ -114,7 +137,56 @@ export function ProductCard({
 							>
 								Add to cart
 							</Button>
-						)}
+						)} */}
+						<Dialog>
+							<DialogTrigger asChild>
+								<Button
+									size='sm'
+									className='h-8 w-full rounded-xl bg-green-500 hover:bg-green-600'
+									/* onClick={() => {
+										handleAddToCart(product);
+									}} */
+								>
+									Add to cart
+								</Button>
+							</DialogTrigger>
+							<DialogContent className='sm:max-w-md w-10/12 rounded-lg'>
+								<DialogHeader>
+									<DialogTitle>
+										Available Packages
+									</DialogTitle>
+									<DialogDescription>
+										Select the quantity of the package you
+										want to add to your cart.
+									</DialogDescription>
+								</DialogHeader>
+								<ToggleGroup
+									variant='outline'
+									type='multiple'
+									size={'lg'}
+								>
+									{product.packages.map((pack, item) => (
+										<DialogClose key={item}>
+											<ToggleGroupItem
+												value={String(pack.quantity)}
+												onClick={() => {
+													/* updateCartItemQuantity(
+														product.id,
+														Number(pack.quantity)
+													); */
+													handleAddToCart(
+														pack,
+														product
+													);
+												}}
+											>
+												{`${pack.quantity} ${pack.unit}`}
+											</ToggleGroupItem>
+										</DialogClose>
+									))}
+								</ToggleGroup>
+							</DialogContent>
+						</Dialog>
 					</div>
 				</CardFooter>
 			)}
