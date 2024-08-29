@@ -10,7 +10,7 @@ export default function RootLayout({
 		<html lang='en'>
 			<body className='flex flex-col relative min-h-screen'>
 				<SiteHeader />
-				<main>{children}</main>
+				<main className='bg-gray-100'>{children}</main>
 				{/* <SiteFooter /> */}
 			</body>
 		</html>

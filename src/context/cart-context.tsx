@@ -1,15 +1,16 @@
 'use client';
 
 import { createContext, useContext, useState } from 'react';
-import { type CartItem, Product } from '@/types';
+import { type CartItem, Package, Product } from '@/types';
 import { useEffect } from 'react';
 import { apiUrl } from '@/config/site-config';
 import axios from 'axios';
 
 interface CartContextValue {
 	cartItems: CartItem[];
-	addToCart: (product: Product) => void;
+	addToCart: (pack: Package, product: Product) => void;
 	removeFromCart: (productId: string) => void;
+	emptyCart: () => void;
 	updateCartItemQuantity: (productId: string, quantity: number) => void;
 	cartTotal: number;
 	cartAmount: number;
@@ -21,6 +22,7 @@ const CartContext = createContext<CartContextValue>({
 	cartItems: [],
 	addToCart: () => {},
 	removeFromCart: () => {},
+	emptyCart: () => {},
 	updateCartItemQuantity: () => {},
 	cartTotal: 0,
 	cartAmount: 0,
@@ -62,15 +64,15 @@ export const CartProvider = ({ children }: Props) => {
 
 	useEffect(() => {
 		cartItems.forEach((item: any) => {
-			totalAmount += Number(item.quantity) * Number(item.product.price);
+			totalAmount += Number(item.quantity) * Number(item.pack.price);
 		});
 
 		setCartAmount(totalAmount);
 	}, [cartItems]);
 
-	const addToCart = (product: Product) => {
+	const addToCart = (pack: Package, product: Product) => {
 		const existingCartItemIndex = cartItems.findIndex(
-			(item) => item.product.id === product.id
+			(item) => item.pack._id === pack._id
 		);
 		if (existingCartItemIndex !== -1) {
 			const existingCartItem = cartItems[existingCartItemIndex];
@@ -82,20 +84,24 @@ export const CartProvider = ({ children }: Props) => {
 			updatedCartItems[existingCartItemIndex] = updatedCartItem;
 			setCartItems(updatedCartItems);
 		} else {
-			setCartItems([...cartItems, { product, quantity: 1 }]);
+			setCartItems([...cartItems, { pack, product, quantity: 1 }]);
 		}
 	};
 
-	const removeFromCart = (productId: string) => {
+	const removeFromCart = (packId: string) => {
 		const updatedCartItems = cartItems.filter(
-			(item) => item.product.id !== productId
+			(item) => item.pack._id !== packId
 		);
 		setCartItems(updatedCartItems);
 	};
 
-	const updateCartItemQuantity = (productId: string, quantity: number) => {
+	const emptyCart = () => {
+		setCartItems([]);
+	};
+
+	const updateCartItemQuantity = (packId: string, quantity: number) => {
 		const existingCartItemIndex = cartItems.findIndex(
-			(item) => item.product.id === productId
+			(item) => item.pack._id === packId
 		);
 		if (existingCartItemIndex !== -1) {
 			const existingCartItem = cartItems[existingCartItemIndex];
@@ -110,7 +116,7 @@ export const CartProvider = ({ children }: Props) => {
 	};
 
 	const cartTotal = cartItems.reduce(
-		(total, item) => total + Number(item.product.price) * item.quantity,
+		(total, item) => total + Number(item.pack.price) * item.quantity,
 		0
 	);
 
@@ -125,6 +131,7 @@ export const CartProvider = ({ children }: Props) => {
 				cartItems,
 				addToCart,
 				removeFromCart,
+				emptyCart,
 				updateCartItemQuantity,
 				cartTotal,
 				cartCount,

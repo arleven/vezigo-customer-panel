@@ -70,7 +70,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 									Number(product?.price) ?? 0,
 									product?.currency
 								)}
-								/{product.unit.toUpperCase()}
+								/{product?.unit?.toUpperCase()}
 							</p>
 						</div>
 						<Separator className='my-1.5' />

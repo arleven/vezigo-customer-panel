@@ -30,6 +30,13 @@ export type Option = {
 	value: string;
 };
 
+export type Package = {
+	_id: string;
+	quantity: number;
+	unit: string;
+	price: number;
+};
+
 export interface Product {
 	id: string;
 	title: string;
@@ -37,13 +44,15 @@ export interface Product {
 	organic: boolean;
 	description: string;
 	category: string;
-	price: string;
-	unit: string;
+	marketPrice: string;
+	packages: [Package];
 	imageUrl: string;
 }
 
 export interface OrderItem {
 	product: Product;
+	pack: Package;
+	unit: string;
 	price: string;
 	quantity: number;
 }
@@ -53,12 +62,7 @@ export interface Order {
 	userDetails: {
 		name: string;
 		phoneNumber: string;
-		address: {
-			flat: string;
-			floor: string;
-			area: string;
-			landmark: string;
-		};
+		address: string;
 		notes: string;
 	};
 	items: [OrderItem];
@@ -67,6 +71,7 @@ export interface Order {
 }
 
 export interface CartItem {
+	pack: Package;
 	product: Product;
 	quantity: number;
 }

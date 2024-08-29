@@ -52,6 +52,8 @@ export default async function OrderPage({ params }: OrderPageProps) {
 
 	const billAmount = formatPrice(Number(order.billAmount), 'INR');
 
+	console.log('items', order.items);
+
 	return (
 		<Shell as='div' className='gap-12'>
 			<main className='flex flex-1 flex-col gap-4 md:gap-8'>
@@ -85,34 +87,44 @@ export default async function OrderPage({ params }: OrderPageProps) {
 										</TableRow>
 									</TableHeader>
 									<TableBody>
-										{order?.items.map((item: OrderItem) => (
-											<TableRow key={item.product.id}>
-												<TableCell className='hidden md:table-cell'>
-													<Image
-														src={
+										{order?.items.map(
+											(item: any, index: number) => (
+												<TableRow key={index}>
+													<TableCell className='hidden md:table-cell'>
+														<Image
+															src={
+																item.product
+																	.imageUrl
+															}
+															alt={
+																item.product
+																	.title
+															}
+															className='aspect-square rounded-md object-cover'
+															width={64}
+															height={64}
+														/>
+													</TableCell>
+													<TableCell className='font-medium'>
+														{item.product.title}{' '}
+														{`(${item.pack.quantity}${item.pack.unit})`}
+													</TableCell>
+													<TableCell>
+														{item.quantity}
+														{item.unit}
+													</TableCell>
+													<TableCell>
+														{formatPrice(
+															Number(
+																item.pack.price
+															) * item.quantity,
 															item.product
-																.imageUrl
-														}
-														alt={item.product.title}
-														className='aspect-square rounded-md object-cover'
-														width={64}
-														height={64}
-													/>
-												</TableCell>
-												<TableCell className='font-medium'>
-													{item.product.title}
-												</TableCell>
-												<TableCell>
-													{item.quantity}
-												</TableCell>
-												<TableCell>
-													{formatPrice(
-														Number(item.price),
-														item.product.currency
-													)}
-												</TableCell>
-											</TableRow>
-										))}
+																.currency
+														)}
+													</TableCell>
+												</TableRow>
+											)
+										)}
 									</TableBody>
 								</Table>
 							</CardContent>
@@ -175,15 +187,7 @@ const CustomerDetailsCard = (props: { order: Order }) => {
 					<CardTitle>Address</CardTitle>
 				</CardHeader>
 				<CardContent className='text-sm'>
-					<div>
-						{props.order.userDetails.address.flat ?? ''}
-						<br />
-						{props.order.userDetails.address.floor ?? ''}
-						<br />
-						{props.order.userDetails.address.area ?? ''}
-						<br />
-						{props.order.userDetails.address.landmark ?? ''}
-					</div>
+					<div>{props.order.userDetails.address ?? ''}</div>
 				</CardContent>
 			</div>
 			<Separator />

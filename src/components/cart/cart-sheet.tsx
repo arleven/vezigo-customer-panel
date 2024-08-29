@@ -46,10 +46,7 @@ import { apiUrl, links, siteConfig } from '@/config/site-config';
 const formSchema = z.object({
 	name: z.string().min(2, 'Your name is required').max(50),
 	phone: z.string().min(2, 'Your phone is required').max(50),
-	flat: z.string().min(2, 'Your flat is required').max(50),
-	floor: z.string().min(2, 'Your floor is required').max(50),
-	area: z.string().min(2, 'Your area is required').max(50),
-	landmark: z.string().max(50).trim().optional(),
+	address: z.string().min(2, 'Your address is required').max(200),
 	notes: z.string().max(200).trim().optional()
 });
 
@@ -59,13 +56,13 @@ const generateWhatsAppUrl = (
 	orderId: string,
 	values: z.infer<typeof formSchema>
 ) => {
-	const mainMessage = `Hey There! I wanted to place a new order.${newLineChar}Name: ${values.name}${newLineChar}Number: ${values.phone}${newLineChar}Address: ${values.flat}, ${values.floor}, ${values.area}, ${values.landmark}${newLineChar}Notes: ${values.notes}${newLineChar}Order: ${links.siteAddress}/orders/${orderId}`;
+	const mainMessage = `Hey There! I wanted to place a new order.${newLineChar}Name: ${values.name}${newLineChar}Number: ${values.phone}${newLineChar}Address: ${values.address}${newLineChar}Notes: ${values.notes}${newLineChar}Order: ${links.siteAddress}/orders/${orderId}`;
 
 	return `${links.whatsAppApiUrl}?phone=${siteConfig.adminPhoneNumber}&text=${mainMessage}`;
 };
 
 export default function CartSheet() {
-	const { cartItems, cartAmount } = useCart();
+	const { cartItems, cartAmount, emptyCart } = useCart();
 	const [loading, setLoading] = React.useState<boolean>(false);
 	const itemCount = cartItems.reduce(
 		(total, item) => total + item.quantity,
@@ -79,10 +76,7 @@ export default function CartSheet() {
 		defaultValues: {
 			name: '',
 			phone: '',
-			flat: '',
-			floor: '',
-			area: '',
-			landmark: '',
+			address: '',
 			notes: ''
 		}
 	});
@@ -90,14 +84,18 @@ export default function CartSheet() {
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		setLoading(true);
 		try {
+			console.log('cartItems', cartItems);
+
 			const items = cartItems.map((item) => {
-				const product = item.product;
-				const itemDetails = {
-					product: product.id,
-					price: product.price,
+				return {
+					pack: {
+						price: item.pack.price,
+						unit: item.pack.unit,
+						quantity: item.pack.quantity
+					},
+					product: item.product.id,
 					quantity: item.quantity
 				};
-				return itemDetails;
 			});
 
 			const orderDetails = {
@@ -106,12 +104,7 @@ export default function CartSheet() {
 				userDetails: {
 					name: values.name,
 					phoneNumber: values.phone,
-					address: {
-						flat: values.flat,
-						floor: values.floor,
-						area: values.area,
-						landmark: values.landmark
-					},
+					address: values.address,
 					notes: values.notes
 				}
 			};
@@ -119,13 +112,17 @@ export default function CartSheet() {
 			const res: any = await axios.post(`${apiUrl}/orders`, orderDetails);
 			const response = await res.data;
 
-			if (response.code === 201) {
+			console.log('response.data.id', response.data.id);
+
+			/* if (response.code === 201) {
 				const whatsAppUrl = generateWhatsAppUrl(
 					response.data.id,
 					values
 				);
-				router.push(whatsAppUrl);
-			}
+
+				window.open(whatsAppUrl, '_blank');
+				router.push(`${links.siteAddress}/orders/${response.data.id}`);
+			} */
 		} catch (error: any) {
 			if (error?.response) {
 				console.log('error', error?.response?.data?.message);
@@ -160,7 +157,6 @@ export default function CartSheet() {
 							'h-4 w-4',
 							cartItems.length > 0 ? 'text-white' : ''
 						)}
-						aria-hidden='true'
 					/>
 				</Button>
 			</SheetTrigger>
@@ -202,7 +198,7 @@ export default function CartSheet() {
 											)})`}
 									</Button>
 								</DialogTrigger>
-								<DialogContent className='sm:max-w-md'>
+								<DialogContent className='sm:max-w-md w-10/12 rounded-xl'>
 									<Form {...form}>
 										<form
 											onSubmit={form.handleSubmit(
@@ -223,96 +219,6 @@ export default function CartSheet() {
 											<div className='space-y-2'>
 												<FormField
 													control={form.control}
-													name='flat'
-													render={({ field }) => (
-														<FormItem>
-															<FormLabel className='text-xs'>
-																Flat / House No.
-																/ Building Name
-															</FormLabel>
-															<FormControl>
-																<Input
-																	placeholder='123'
-																	{...field}
-																	className='h-8'
-																	disabled={
-																		loading
-																	}
-																/>
-															</FormControl>
-															<FormMessage className='text-xs' />
-														</FormItem>
-													)}
-												/>
-												<FormField
-													control={form.control}
-													name='floor'
-													render={({ field }) => (
-														<FormItem>
-															<FormLabel className='text-xs'>
-																Floor
-															</FormLabel>
-															<FormControl>
-																<Input
-																	placeholder='Second Floor'
-																	{...field}
-																	className='h-8'
-																	disabled={
-																		loading
-																	}
-																/>
-															</FormControl>
-															<FormMessage className='text-xs' />
-														</FormItem>
-													)}
-												/>
-												<FormField
-													control={form.control}
-													name='area'
-													render={({ field }) => (
-														<FormItem>
-															<FormLabel className='text-xs'>
-																Area / Sector /
-																Locality
-															</FormLabel>
-															<FormControl>
-																<Input
-																	placeholder='M.G. Road'
-																	{...field}
-																	className='h-8'
-																	disabled={
-																		loading
-																	}
-																/>
-															</FormControl>
-															<FormMessage className='text-xs' />
-														</FormItem>
-													)}
-												/>
-												<FormField
-													control={form.control}
-													name='landmark'
-													render={({ field }) => (
-														<FormItem>
-															<FormLabel className='text-xs'>
-																Nearby Landmark
-															</FormLabel>
-															<FormControl>
-																<Input
-																	placeholder='Near School'
-																	{...field}
-																	className='h-8'
-																	disabled={
-																		loading
-																	}
-																/>
-															</FormControl>
-															<FormMessage className='text-xs' />
-														</FormItem>
-													)}
-												/>
-												<FormField
-													control={form.control}
 													name='name'
 													render={({ field }) => (
 														<FormItem>
@@ -323,7 +229,7 @@ export default function CartSheet() {
 																<Input
 																	placeholder='Rahul Sharma'
 																	{...field}
-																	className='h-8'
+																	className='h-8 text-base'
 																	disabled={
 																		loading
 																	}
@@ -346,10 +252,32 @@ export default function CartSheet() {
 																	placeholder='9876543210'
 																	type='number'
 																	{...field}
-																	className='h-8'
+																	className='h-8 text-base'
 																	disabled={
 																		loading
 																	}
+																/>
+															</FormControl>
+															<FormMessage className='text-xs' />
+														</FormItem>
+													)}
+												/>
+												<FormField
+													control={form.control}
+													name='address'
+													render={({ field }) => (
+														<FormItem>
+															<FormLabel className='text-xs'>
+																Address
+															</FormLabel>
+															<FormControl>
+																<Textarea
+																	{...field}
+																	placeholder={`Flat / House No. / Building Name\nFloor\nArea / Sector / Locality\nNearby Landmark`}
+																	disabled={
+																		loading
+																	}
+																	className='text-base'
 																/>
 															</FormControl>
 															<FormMessage className='text-xs' />
@@ -371,6 +299,7 @@ export default function CartSheet() {
 																	disabled={
 																		loading
 																	}
+																	className='text-base'
 																/>
 															</FormControl>
 															<FormMessage className='text-xs' />
