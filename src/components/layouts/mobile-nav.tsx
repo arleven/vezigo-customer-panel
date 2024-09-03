@@ -27,6 +27,16 @@ export function MobileNav({ mainNavItems }: MobileNavProps) {
 					<Icons.menu className='h-6 w-6' />
 				</Button>
 			</SheetTrigger>
+			<Link
+				aria-label='home'
+				href='/'
+				className='inline items-center space-x-2 lg:hidden'
+			>
+				<Icons.shoppingCart
+					className='h-6 w-6 ml-2'
+					aria-hidden='true'
+				/>
+			</Link>
 			<SheetContent side='left' className='pl-1 pr-0'>
 				<div className='px-7'>
 					<Link

@@ -29,7 +29,7 @@ export function CartItemActions({ item }: CartItemActionsProps) {
 				<Button
 					variant='outline'
 					size='icon'
-					className='h-8 w-8'
+					className='h-10 w-10'
 					onClick={() => {
 						handleQuantityChange(item.quantity - 1);
 					}}
@@ -38,18 +38,19 @@ export function CartItemActions({ item }: CartItemActionsProps) {
 				</Button>
 			</div>
 			<Input
-				className='h-8 w-14 text-base'
+				className='h-10 w-14 text-base'
 				type='number'
 				min='1'
 				value={item.quantity}
 				onChange={(e) => {
 					handleQuantityChange(Number(e.target.value));
 				}}
+				disabled
 			/>
 			<Button
 				variant='outline'
 				size='icon'
-				className='h-8 w-8'
+				className='h-10 w-10'
 				onClick={() => {
 					handleQuantityChange(item.quantity + 1);
 				}}
@@ -59,7 +60,7 @@ export function CartItemActions({ item }: CartItemActionsProps) {
 			<Button
 				variant='outline'
 				size='icon'
-				className='sm:h-8 sm:w-8 h-6 w-6'
+				className='h-10 w-10'
 				onClick={handleRemoveClick}
 			>
 				<Icons.trash className='h-4 w-4' />
