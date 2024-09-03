@@ -31,6 +31,7 @@ import {
 	DialogTitle,
 	DialogTrigger
 } from './ui/dialog';
+import { Badge } from './ui/badge';
 
 interface ProductCardProps extends React.HTMLAttributes<HTMLDivElement> {
 	product: Product;
@@ -53,33 +54,32 @@ export function ProductCard({
 		useCart();
 
 	const [quantity, setQuantity] = React.useState(0);
-	// const [productInCart, setProductInCart] = React.useState('');
 
 	const handleAddToCart = (pack: Package, product: Product) => {
 		addToCart(pack, product);
 	};
 
-	/* const isProductInCart = cartItems.some((item) => {
+	const isProductInCart = cartItems.some((item) => {
 		if (item.product.id === product.id) {
-			// setProductInCart(item.product.id);
 			return item.product.id === product.id;
 		}
-	}); */
+	});
 
-	/* React.useEffect(() => {
+	React.useEffect(() => {
 		if (isProductInCart) {
-			console.log(isProductInCart, productInCart);
+			console.log(isProductInCart);
 		}
-	}, [isProductInCart]); */
+	}, [isProductInCart]);
 
 	return (
 		<Card
 			className={cn(
-				'h-full rounded-3xl shadow-sm hover:shadow-md hover:shadow-green-200 bg-white p-2',
+				'relative h-full rounded-3xl shadow-sm hover:shadow-md hover:shadow-green-200 bg-white p-2',
 				className
 			)}
 			{...props}
 		>
+			{isProductInCart && <CartBadge />}
 			{/* eslint-disable-next-line @next/next/no-img-element */}
 			<img
 				src={product.imageUrl}
@@ -87,11 +87,14 @@ export function ProductCard({
 				className='object-cover h-48 w-96 rounded-2xl'
 				loading='lazy'
 			/>
+			<Badge className='absolute right-4 bottom-24 justify-center hover:bg-red-600 bg-red-600 text-white font-bold text-base rounded-2xl p-2'>
+				{`₹${product?.marketPrice?.toUpperCase()}`}
+			</Badge>
 			<CardContent className='grid gap-2.5 p-2'>
 				<CardTitle className='text-base'>
 					{product.title}
 					<CardDescription className='line-clamp-2'>
-						{`₹${product?.marketPrice?.toUpperCase()}`}
+						{product?.description}
 					</CardDescription>
 				</CardTitle>
 			</CardContent>
@@ -162,7 +165,8 @@ export function ProductCard({
 								</DialogHeader>
 								<ToggleGroup
 									variant='outline'
-									type='multiple'
+									type='single'
+									className='overflow-auto'
 									size={'lg'}
 								>
 									{product.packages.map((pack, item) => (
@@ -180,7 +184,9 @@ export function ProductCard({
 													);
 												}}
 											>
-												{`${pack.quantity} ${pack.unit}`}
+												<span>
+													{`${pack.quantity} ${pack.unit}`}
+												</span>
 											</ToggleGroupItem>
 										</DialogClose>
 									))}
@@ -193,3 +199,11 @@ export function ProductCard({
 		</Card>
 	);
 }
+
+const CartBadge = () => {
+	return (
+		<Badge className='absolute -right-2 -top-2 justify-center hover:bg-yellow-400 bg-yellow-400 text-black rounded-full p-2'>
+			In Cart
+		</Badge>
+	);
+};

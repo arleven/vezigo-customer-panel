@@ -1,3 +1,6 @@
+'use client';
+
+import { usePathname } from 'next/navigation';
 import { useDebounce } from '@/hooks/use-debounce';
 import { Product } from '@/types';
 import { useRouter } from 'next/navigation';
@@ -15,9 +18,22 @@ import { Skeleton } from './ui/skeleton';
 import { apiUrl } from '@/config/site-config';
 import axios from 'axios';
 
-async function getProducts(sort?: string): Promise<Product[]> {
+async function getProducts(
+	currentPage: string,
+	sort?: string
+): Promise<Product[]> {
 	try {
-		const productsApiUrl = `${apiUrl}/products`;
+		let path: string = '';
+
+		if (currentPage.includes('fruits')) {
+			path = 'fruit';
+		}
+
+		if (currentPage.includes('vegetables')) {
+			path = 'vegetable';
+		}
+
+		const productsApiUrl = `${apiUrl}/products?category=${path}`;
 		const response = await axios.get(productsApiUrl);
 		const responseData = await response.data;
 		const { data } = responseData;
@@ -30,22 +46,23 @@ async function getProducts(sort?: string): Promise<Product[]> {
 
 export function Combobox() {
 	const router = useRouter();
+	const pathname = usePathname();
 	const [isLoading, setIsLoading] = React.useState(false);
 	const [isOpen, setIsOpen] = React.useState(false);
 	const [query, setQuery] = React.useState('');
 	const debouncedQuery = useDebounce(query, 300);
 	const [products, setProducts] = React.useState<Product[]>([]);
 
-	const fetchData = async () => {
+	const fetchData = async (pathname: string) => {
 		setIsLoading(true);
-		const products = await getProducts();
+		const products = await getProducts(pathname);
 		setIsLoading(false);
 		setProducts(products as Product[]);
 	};
 
 	React.useEffect(() => {
-		fetchData();
-	}, []);
+		fetchData(pathname);
+	}, [pathname]);
 
 	const filterProducts = (query: string, products: Product[]) => {
 		const filteredData = products.filter((product) =>
@@ -82,6 +99,7 @@ export function Combobox() {
 				<CommandInput
 					placeholder='Search...'
 					value={query}
+					className='text-base'
 					onValueChange={setQuery}
 				/>
 				<CommandList className='p-2'>
@@ -95,7 +113,7 @@ export function Combobox() {
 						filteredData.map((product) => (
 							<CommandItem
 								key={product.id}
-								onSelect={() => handleSelect(product)}
+								// onSelect={() => handleSelect(product)}
 							>
 								{product.title}
 							</CommandItem>

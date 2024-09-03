@@ -42,4 +42,5 @@ export const siteConfig = {
 			external: true,
 		},
 	],
+	mapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
 };
