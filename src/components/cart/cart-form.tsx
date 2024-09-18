@@ -2,6 +2,7 @@ import axios from 'axios';
 import React from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import {
@@ -25,6 +26,8 @@ import { apiUrl, links, siteConfig } from '@/config/site-config';
 
 import GoogleMapsComponent from '../google-maps';
 import { Icons } from '../icons';
+import { CartItem } from '@/types';
+const { googleMap } = siteConfig;
 
 const formSchema = z.object({
 	name: z.string().min(2, 'Your name is required').max(50),
@@ -46,15 +49,19 @@ const generateWhatsAppUrl = (
 };
 
 export default function CartForm(props: any) {
+	const router = useRouter();
 	const [loading, setLoading] = React.useState<boolean>(false);
-	const [selectedPosition, setSelectedPosition] = React.useState(null);
+	const [selectedPosition, setSelectedPosition] = React.useState(
+		googleMap.defaultLatLong
+	);
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			name: '',
-			phone: '',
-			address: '',
+			name: 'John Doe',
+			phone: '1234567890',
+			altPhone: '1234567890',
+			address: 'qwertyuiop',
 			notes: ''
 		}
 	});
@@ -64,7 +71,7 @@ export default function CartForm(props: any) {
 		try {
 			console.log('cartItems', props.cartItems);
 
-			const items = props.cartItems.map((item) => {
+			const items = props.cartItems.map((item: CartItem) => {
 				return {
 					pack: {
 						price: item.pack.price,
@@ -100,8 +107,16 @@ export default function CartForm(props: any) {
 					values
 				);
 				props.emptyCart();
-				window.open(whatsAppUrl, '_blank');
-				window.open(`${links.siteAddress}/orders/${response.data.id}`);
+				setTimeout(() => {
+					window.open(whatsAppUrl, '_blank');
+				});
+				router.push(`${links.siteAddress}/orders/${response.data.id}`);
+				setTimeout(() => {
+					location.reload();
+				}, 1000);
+
+				/* window.open(whatsAppUrl, '_blank');
+				window.open(`${links.siteAddress}/orders/${response.data.id}`); */
 			}
 		} catch (error: any) {
 			if (error?.response) {

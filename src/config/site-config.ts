@@ -6,7 +6,8 @@ export const apiUrl: string = process.env.NEXT_PUBLIC_API_URL as string;
 
 export const links = {
 	rickroll: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-	whatsAppApiUrl: 'whatsapp://send',
+	// whatsAppApiUrl: 'whatsapp://send',
+	whatsAppApiUrl: 'https://api.whatsapp.com/send',
 	siteAddress: process.env.NEXT_PUBLIC_SITE_ADDRESS as string
 };
 
@@ -42,5 +43,21 @@ export const siteConfig = {
 			external: true,
 		},
 	],
-	mapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
+	googleMap: {
+		apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
+		containerStyle: {
+			width: 'auto',
+			height: '200px'
+		},
+		defaultLatLong: {
+			lat: 26.2389,
+			lng: 73.0243
+		},
+		options: {
+			disableDefaultUI: true,
+			clickableIcons: true,
+			scrollwheel: false
+		},
+		zoom: 20
+	}
 };
