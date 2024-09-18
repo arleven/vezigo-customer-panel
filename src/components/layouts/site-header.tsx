@@ -17,7 +17,7 @@ const SiteHeader = () => {
 				<MobileNav mainNavItems={siteConfig.mainNav} />
 				<div className='flex flex-1 items-center justify-end space-x-4'>
 					<nav className='flex items-center space-x-2'>
-						<Combobox />
+						{/* <Combobox /> */}
 						<CartSheet />
 					</nav>
 				</div>

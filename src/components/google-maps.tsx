@@ -1,41 +1,33 @@
-import React from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { siteConfig } from '@/config/site-config';
 import { GoogleMap, Marker, useLoadScript } from '@react-google-maps/api';
+
+const { googleMap } = siteConfig;
 
 export default function GoogleMapsComponent(props: any) {
 	const { selectedPosition, setSelectedPosition } = props;
 
-	const jodhpurLatLong = {
-		lat: 26.2389,
-		lng: 73.0243
-	};
+	const [currentPosition, setCurrentPosition] = useState(
+		googleMap.defaultLatLong
+	);
 
-	const [currentPosition, setCurrentPosition] =
-		React.useState(jodhpurLatLong);
-
-	React.useEffect(() => {
+	useEffect(() => {
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition((position) => {
-				setCurrentPosition({
+				const coords = {
 					lat: position.coords.latitude,
 					lng: position.coords.longitude
-				});
-				setSelectedPosition({
-					lat: position.coords.latitude,
-					lng: position.coords.longitude
-				});
+				};
+				setCurrentPosition(coords);
+				setSelectedPosition(coords);
 			});
 		}
 	}, []);
 
-	const libraries = React.useMemo(() => ['places'], []);
+	const libraries = useMemo(() => ['places'], []);
 
-	const mapOptions = React.useMemo<google.maps.MapOptions>(
-		() => ({
-			disableDefaultUI: true,
-			clickableIcons: true,
-			scrollwheel: false
-		}),
+	const mapOptions = useMemo<google.maps.MapOptions>(
+		() => googleMap.options,
 		[]
 	);
 
@@ -47,21 +39,19 @@ export default function GoogleMapsComponent(props: any) {
 	};
 
 	const { isLoaded } = useLoadScript({
-		googleMapsApiKey: siteConfig.mapsApiKey as string,
+		googleMapsApiKey: googleMap.apiKey as string,
 		libraries: libraries as any
 	});
+
 	return (
 		<>
 			{isLoaded ? (
 				<GoogleMap
 					options={mapOptions}
-					zoom={20}
+					zoom={googleMap.zoom}
 					center={currentPosition}
 					mapTypeId={google.maps.MapTypeId.ROADMAP}
-					mapContainerStyle={{
-						width: 'auto',
-						height: '200px'
-					}}
+					mapContainerStyle={googleMap.containerStyle}
 					onLoad={() => console.log('Map Component Loaded...')}
 					onClick={handleMapClick}
 				>

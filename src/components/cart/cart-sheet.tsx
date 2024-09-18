@@ -3,6 +3,7 @@
 import * as React from 'react';
 import {
 	Sheet,
+	SheetClose,
 	SheetContent,
 	SheetHeader,
 	SheetTitle,
@@ -111,6 +112,7 @@ export default function CartSheet() {
 												cartItems={cartItems}
 												cartAmount={cartAmount}
 												emptyCart={emptyCart}
+												close={SheetClose}
 											/>
 										</div>
 									</div>
