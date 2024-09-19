@@ -14,6 +14,7 @@ import {
 	FormMessage
 } from '@/components/ui/form';
 import {
+	DialogClose,
 	DialogDescription,
 	DialogFooter,
 	DialogHeader,
@@ -54,14 +55,15 @@ export default function CartForm(props: any) {
 	const [selectedPosition, setSelectedPosition] = React.useState(
 		googleMap.defaultLatLong
 	);
+	const [address, setAddress] = React.useState('');
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			name: 'John Doe',
-			phone: '1234567890',
-			altPhone: '1234567890',
-			address: 'qwertyuiop',
+			name: '',
+			phone: '',
+			altPhone: '',
+			address: '',
 			notes: ''
 		}
 	});
@@ -140,6 +142,8 @@ export default function CartForm(props: any) {
 					<GoogleMapsComponent
 						selectedPosition={selectedPosition}
 						setSelectedPosition={setSelectedPosition}
+						address={address}
+						setAddress={setAddress}
 					/>
 				</div>
 				<div className='space-y-2'>
