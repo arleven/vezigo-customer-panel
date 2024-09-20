@@ -1,9 +1,16 @@
 import { useId } from 'react';
 import usePlacesAutocomplete from 'use-places-autocomplete';
-import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { ExpandIcon, MapPinIcon, PlusIcon } from 'lucide-react';
 import { MinusIcon } from 'lucide-react';
+import {
+	Command,
+	CommandEmpty,
+	CommandGroup,
+	CommandInput,
+	CommandItem,
+	CommandList
+} from './ui/command';
 
 export const PlacesAutocomplete = ({
 	onAddressSelect,
@@ -25,6 +32,12 @@ export const PlacesAutocomplete = ({
 	setCurrentLocation: any;
 }) => {
 	const autocompleteResultsId = useId();
+
+	const jodhpurBounds = new google.maps.LatLngBounds(
+		new google.maps.LatLng(26.027, 72.878), // SW corner
+		new google.maps.LatLng(26.416, 73.17) // NE corner
+	);
+
 	const {
 		ready,
 		value,
@@ -32,7 +45,10 @@ export const PlacesAutocomplete = ({
 		setValue,
 		clearSuggestions
 	} = usePlacesAutocomplete({
-		requestOptions: { componentRestrictions: { country: 'in' } },
+		requestOptions: {
+			bounds: jodhpurBounds,
+			componentRestrictions: { country: 'in' }
+		},
 		debounce: 300,
 		cache: 86400
 	});
@@ -45,18 +61,19 @@ export const PlacesAutocomplete = ({
 				description
 			} = suggestion;
 			return (
-				<li
+				<CommandItem
 					key={place_id}
-					onClick={() => {
+					onSelect={() => {
 						setValue(description, false);
 						clearSuggestions();
 						onAddressSelect && onAddressSelect(description);
 					}}
-					className='focus:bg-orange-300 hover:bg-gray-300 border-b border-gray-500'
-					role='option'
 				>
-					<strong>{main_text}</strong> <small>{secondary_text}</small>
-				</li>
+					<span>
+						{main_text}
+						{secondary_text ? `, ${secondary_text}` : ''}
+					</span>
+				</CommandItem>
 			);
 		});
 	};
@@ -90,41 +107,20 @@ export const PlacesAutocomplete = ({
 
 	return (
 		<>
-			<div className='flex items-center space-x-1'>
-				<Input
-					value={value}
-					className='text-black rounded-md bg-white text-base outline-none focus-visible:outline-none'
-					type='text'
-					placeholder='Search address...'
-					role='combobox'
-					disabled={!ready}
-					onChange={(e) => setValue(e.target.value)}
-				/>
-				<Button
-					variant='outline'
-					size='icon'
-					type='button'
-					onClick={setCurrentLocation}
-				>
-					<MapPinIcon className='h-4 w-4' />
-				</Button>
-				<Button
-					variant='outline'
-					size='icon'
-					type='button'
-					onClick={increaseZoom}
-				>
-					<PlusIcon className='h-4 w-4' />
-				</Button>
-				<Button
-					variant='outline'
-					size='icon'
-					type='button'
-					onClick={decreaseZoom}
-				>
-					<MinusIcon className='h-4 w-4' />
-				</Button>
-				{/* <Button
+			<Command>
+				<div className='flex items-center space-x-1'>
+					<CommandInput
+						placeholder='Search address...'
+						value={value}
+						className='text-black rounded-md bg-white text-base sm:w-full'
+						onValueChange={setValue}
+						disabled={!ready}
+					/>
+
+					<CurrentLocationButton setLocation={setCurrentLocation} />
+					<ZoomInButton increaseZoom={increaseZoom} />
+					<ZoomOutButton decreaseZoom={decreaseZoom} />
+					{/* <Button
 					variant='outline'
 					size='icon'
 					type='button'
@@ -132,17 +128,55 @@ export const PlacesAutocomplete = ({
 				>
 					<ExpandIcon className='h-4 w-4' />
 				</Button> */}
-			</div>
-			{status === 'OK' && (
-				<ul
-					id={autocompleteResultsId}
-					className='focus:bg-yellow-100'
-					role='listbox'
-					aria-label='Suggestions'
-				>
-					{renderSuggestions()}
-				</ul>
-			)}
+				</div>
+				{status === 'OK' && (
+					<CommandList id={autocompleteResultsId}>
+						<CommandEmpty>No results found.</CommandEmpty>
+						<CommandGroup heading='Suggestions'>
+							{renderSuggestions()}
+						</CommandGroup>
+					</CommandList>
+				)}
+			</Command>
 		</>
+	);
+};
+
+const CurrentLocationButton = (props: any) => {
+	return (
+		<Button
+			variant='outline'
+			size='icon'
+			type='button'
+			onClick={props.setLocation}
+		>
+			<MapPinIcon className='h-4 w-4' />
+		</Button>
+	);
+};
+
+const ZoomInButton = (props: any) => {
+	return (
+		<Button
+			variant='outline'
+			size='icon'
+			type='button'
+			onClick={props.increaseZoom}
+		>
+			<PlusIcon className='h-4 w-4' />
+		</Button>
+	);
+};
+
+const ZoomOutButton = (props: any) => {
+	return (
+		<Button
+			variant='outline'
+			size='icon'
+			type='button'
+			onClick={props.decreaseZoom}
+		>
+			<MinusIcon className='h-4 w-4' />
+		</Button>
 	);
 };
