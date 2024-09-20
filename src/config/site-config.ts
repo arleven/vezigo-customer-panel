@@ -22,6 +22,13 @@ export const sortOptions = [
 	},
 ];
 
+const jodhpurBounds = {
+	north: 26.416,
+	south: 26.027,
+	west: 72.878,
+	east: 73.170,
+};
+
 export const siteConfig = {
 	name: "Vezigo",
 	adminPhoneNumber: process.env.NEXT_PUBLIC_ADMIN_PHONE_NUMBER as string,
@@ -59,6 +66,10 @@ export const siteConfig = {
 			gestureHandling: 'greedy',
 			mapTypeControl: false,
 			zoomControl: false,
+			restriction: {
+				latLngBounds: jodhpurBounds, // Restrict map to Jodhpur
+				strictBounds: false, // Allows map to move slightly outside bounds
+			},
 		},
 		zoom: 20
 	}

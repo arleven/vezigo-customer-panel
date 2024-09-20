@@ -14,6 +14,12 @@ const Command = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<CommandPrimitive
 		ref={ref}
+		/* 
+		* Below is a hack to fix the issue with the command not filtering the suggestions
+		* borrowed from here:
+		* https://github.com/huntabyte/shadcn-svelte/discussions/800#discussioncomment-9503590
+		*/
+		shouldFilter={false}
 		className={cn(
 			"flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground",
 			className
