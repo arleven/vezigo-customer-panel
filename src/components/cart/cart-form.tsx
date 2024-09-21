@@ -114,6 +114,9 @@ export default function CartForm(props: any) {
 				});
 				router.push(`${links.siteAddress}/orders/${response.data.id}`);
 				setTimeout(() => {
+					router.push(
+						`${links.siteAddress}/orders/${response.data.id}`
+					);
 					location.reload();
 				}, 1000);
 
