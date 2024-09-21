@@ -44,7 +44,7 @@ const generateWhatsAppUrl = (
 	orderId: string,
 	values: z.infer<typeof formSchema>
 ) => {
-	const mainMessage = `Hey There! I wanted to place a new order.${newLineChar}Name: ${values.name}${newLineChar}Number: ${values.phone}${newLineChar}Alt. Phone Number: ${values.altPhone}${newLineChar}Address: ${values.address}${newLineChar}Notes: ${values.notes}${newLineChar}Order: ${links.siteAddress}/orders/${orderId}`;
+	const mainMessage = `Hey There! I wanted to place a new order.${newLineChar}${newLineChar}Order ID: ${orderId}${newLineChar}Name: ${values.name}${newLineChar}Number: ${values.phone}${newLineChar}Alt. Phone Number: ${values.altPhone}${newLineChar}Address: ${values.address}${newLineChar}Notes: ${values.notes}${newLineChar}Order: ${links.siteAddress}/orders/${orderId}`;
 
 	return `${links.whatsAppApiUrl}?phone=${siteConfig.adminPhoneNumber}&text=${mainMessage}`;
 };
