@@ -49,11 +49,11 @@ const generateWhatsAppUrl = (
 ) => {
 	const mainMessage = `Hey There! I wanted to place a new order.${newLineChar}${newLineChar}Order ID: ${orderId}${newLineChar}Name: ${values.name}${newLineChar}Number: ${values.phone}${newLineChar}Alt. Phone Number: ${values.altPhone}${newLineChar}Address: ${values.address}${newLineChar}Notes: ${values.notes}${newLineChar}Order: ${links.siteAddress}/orders/${orderId}`;
 
-	if (isSafari || isIos) {
+	/* if (isSafari || isIos) {
 		return `${links.safariWhatsAppApiUrl}?phone=+${siteConfig.adminPhoneNumber}?text=${mainMessage}`;
-	} else {
-		return `${links.regularWhatsAppApiUrl}/${siteConfig.adminPhoneNumber}?text=${mainMessage}`;
-	}
+	} else { */
+	return `${links.regularWhatsAppApiUrl}/${siteConfig.adminPhoneNumber}?text=${mainMessage}`;
+	// }
 };
 
 export default function CartForm(props: any) {
