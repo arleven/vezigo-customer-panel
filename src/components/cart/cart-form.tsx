@@ -33,7 +33,7 @@ const { googleMap } = siteConfig;
 const formSchema = z.object({
 	name: z.string().min(2, 'Your name is required').max(50),
 	phone: z.string().min(2, 'Your phone is required').max(50),
-	altPhone: z.string().max(50),
+	altPhone: z.string().min(2, 'Your alternate phone is required').max(50),
 	address: z.string().min(2, 'Your address is required').max(200),
 	notes: z.string().max(200).trim().optional()
 });
