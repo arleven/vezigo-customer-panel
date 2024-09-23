@@ -65,6 +65,10 @@ export interface Order {
 		address: string;
 		notes: string;
 	};
+	geo: {
+		lat: number;
+		lng: number;
+	};
 	items: [OrderItem];
 	billAmount: string;
 	createdAt: string;

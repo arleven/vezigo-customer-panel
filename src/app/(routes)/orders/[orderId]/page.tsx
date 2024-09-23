@@ -188,6 +188,13 @@ const CustomerDetailsCard = (props: { order: Order }) => {
 				</CardHeader>
 				<CardContent className='text-sm'>
 					<div>{props.order.userDetails.address ?? ''}</div>
+					<Link
+						className='mt-4 p-4 bg-green-500 hover:bg-green-600 text-white rounded-md py-3 px-4 shadow-lg inline-flex items-center gap-2 font-bold'
+						href={`https://maps.google.com/?q=${props.order.geo.lat},${props.order.geo.lng}`}
+						target='_blank'
+					>
+						Open in Google Maps
+					</Link>
 				</CardContent>
 			</div>
 			<Separator />
