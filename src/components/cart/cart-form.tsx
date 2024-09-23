@@ -1,9 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 import { z } from 'zod';
-import { detect } from 'detect-browser';
 import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import {
@@ -43,29 +41,19 @@ const newLineChar = '%0a';
 
 const generateWhatsAppUrl = (
 	orderId: string,
-	values: z.infer<typeof formSchema>,
-	isSafari: boolean,
-	isIos: boolean
+	values: z.infer<typeof formSchema>
 ) => {
 	const mainMessage = `Hey There! I wanted to place a new order.${newLineChar}${newLineChar}Order ID: ${orderId}${newLineChar}Name: ${values.name}${newLineChar}Number: ${values.phone}${newLineChar}Alt. Phone Number: ${values.altPhone}${newLineChar}Address: ${values.address}${newLineChar}Notes: ${values.notes}${newLineChar}Order: ${links.siteAddress}/orders/${orderId}`;
-
-	/* if (isSafari || isIos) {
-		return `${links.safariWhatsAppApiUrl}?phone=+${siteConfig.adminPhoneNumber}?text=${mainMessage}`;
-	} else { */
 	return `${links.regularWhatsAppApiUrl}/${siteConfig.adminPhoneNumber}?text=${mainMessage}`;
 	// }
 };
 
 export default function CartForm(props: any) {
-	const browser = detect();
-	const router = useRouter();
 	const [loading, setLoading] = React.useState<boolean>(false);
 	const [selectedPosition, setSelectedPosition] = React.useState(
 		googleMap.defaultLatLong
 	);
 	const [address, setAddress] = React.useState('');
-	const [isSafari, setIsSafari] = React.useState(false);
-	const [isIos, setIsIos] = React.useState(false);
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -77,25 +65,6 @@ export default function CartForm(props: any) {
 			notes: ''
 		}
 	});
-
-	React.useEffect(() => {
-		switch (browser && browser.name) {
-			case 'safari':
-				setIsSafari(true);
-				break;
-			case 'ios':
-				setIsIos(true);
-				break;
-			case 'chrome':
-				console.log('chrome');
-				break;
-			case 'firefox':
-				console.log('firefox');
-				break;
-			default:
-				console.log('browser not supported');
-		}
-	}, []);
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		setLoading(true);
@@ -135,24 +104,19 @@ export default function CartForm(props: any) {
 			if (response.code === 201) {
 				const whatsAppUrl = generateWhatsAppUrl(
 					response.data.id,
-					values,
-					isSafari,
-					isIos
+					values
 				);
 				props.emptyCart();
-				setTimeout(() => {
-					window.open(whatsAppUrl, '_blank');
-				});
-				router.push(`${links.siteAddress}/orders/${response.data.id}`);
-				setTimeout(() => {
-					router.push(
-						`${links.siteAddress}/orders/${response.data.id}`
-					);
-					location.reload();
-				}, 1000);
 
-				/* window.open(whatsAppUrl, '_blank');
-				window.open(`${links.siteAddress}/orders/${response.data.id}`); */
+				const whatsAppLink = document.createElement('a');
+				whatsAppLink.href = whatsAppUrl;
+				whatsAppLink.target = '_blank';
+				whatsAppLink.rel = 'noopener noreferrer';
+				whatsAppLink.click();
+
+				const orderPageLink = document.createElement('a');
+				orderPageLink.href = `${links.siteAddress}/orders/${response.data.id}`;
+				orderPageLink.click();
 			}
 		} catch (error: any) {
 			if (error?.response) {
