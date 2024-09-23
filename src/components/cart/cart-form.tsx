@@ -78,7 +78,7 @@ export default function CartForm(props: any) {
 		}
 	});
 
-	useEffect(() => {
+	React.useEffect(() => {
 		switch (browser && browser.name) {
 			case 'safari':
 				setIsSafari(true);
