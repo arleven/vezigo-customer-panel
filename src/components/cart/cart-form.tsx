@@ -30,10 +30,10 @@ import { CartItem } from '@/types';
 const { googleMap } = siteConfig;
 
 const formSchema = z.object({
-	name: z.string().min(2, 'Your name is required').max(50),
-	phone: z.string().min(2, 'Your phone is required').max(50),
-	altPhone: z.string().min(2, 'Your alternate phone is required').max(50),
-	address: z.string().min(2, 'Your address is required').max(200),
+	name: z.string().min(2, 'Your name is required').max(50).trim(),
+	phone: z.string().min(2, 'Your phone is required').max(50).trim(),
+	altPhone: z.string().trim().optional(),
+	address: z.string().min(2, 'Your address is required').max(200).trim(),
 	notes: z.string().max(200).trim().optional()
 });
 
