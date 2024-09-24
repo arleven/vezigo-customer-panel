@@ -72,6 +72,7 @@ export interface Order {
 	items: [OrderItem];
 	billAmount: string;
 	createdAt: string;
+	orderId: string;
 }
 
 export interface CartItem {
