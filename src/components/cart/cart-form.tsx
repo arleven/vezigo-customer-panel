@@ -103,7 +103,7 @@ export default function CartForm(props: any) {
 
 			if (response.code === 201) {
 				const whatsAppUrl = generateWhatsAppUrl(
-					response.data.id,
+					response.data.orderId,
 					values
 				);
 				props.emptyCart();

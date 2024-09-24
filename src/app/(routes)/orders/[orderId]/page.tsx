@@ -59,6 +59,8 @@ export default async function OrderPage({ params }: OrderPageProps) {
 				<div className='flex items-center gap-4'>
 					<h1 className='font-semibold text-lg md:text-xl'>
 						<span className='font-normal text-gray-500 dark:text-gray-400'>
+							Order ID: <strong>{order.orderId}</strong>
+							<br />
 							Ordered by {order.userDetails.name}
 						</span>
 						<span className='font-normal text-gray-500 dark:text-gray-400'>
