@@ -118,8 +118,8 @@ export function ProductCard({
 									className='overflow-auto'
 									size={'lg'}
 								>
-									{product.packages.map((pack, item) => (
-										<DialogClose key={item}>
+									{product.packages.map((pack, index) => (
+										<DialogClose key={index}>
 											<ToggleGroupItem
 												value={String(pack.quantity)}
 												onClick={() => {
@@ -129,8 +129,8 @@ export function ProductCard({
 													);
 												}}
 											>
-												<span>
-													{`${pack.quantity} ${pack.unit}`}
+												<span className='inline'>
+													{`${pack.quantity}${pack.unit}\n₹${pack.price}`}
 												</span>
 											</ToggleGroupItem>
 										</DialogClose>
