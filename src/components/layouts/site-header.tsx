@@ -11,7 +11,10 @@ import { Combobox } from '../combobox';
 
 const SiteHeader = () => {
 	return (
-		<header className='sticky top-0 z-10 w-full border-b bg-yellow-400'>
+		<header
+			className='sticky top-0 z-10 w-full border-b'
+			style={{ background: '#ffde08' }}
+		>
 			<div className='container flex h-16 items-center'>
 				<MainNav mainNavItems={siteConfig.mainNav} />
 				<MobileNav mainNavItems={siteConfig.mainNav} />
