@@ -10,6 +10,8 @@ import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet';
 import { ScrollArea } from '../ui/scroll-area';
 import { Button } from '../ui/button';
 import { Icons } from '../icons';
+import Image from 'next/image';
+import vezigoLogo from '../../assets/vezigo.png';
 
 interface MobileNavProps {
 	mainNavItems?: MainNavItem[];
@@ -32,9 +34,16 @@ export function MobileNav({ mainNavItems }: MobileNavProps) {
 				href='/'
 				className='inline items-center space-x-2 lg:hidden'
 			>
-				<Icons.shoppingCart
+				{/* <Icons.shoppingCart
 					className='h-6 w-6 ml-2'
 					aria-hidden='true'
+				/> */}
+				<Image
+					src={vezigoLogo}
+					width={50}
+					height={50}
+					className='rounded'
+					alt='Vezigo Logo'
 				/>
 			</Link>
 			<SheetContent side='left' className='pl-1 pr-0'>
