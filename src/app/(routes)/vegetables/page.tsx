@@ -1,10 +1,10 @@
-import { Header } from "@/components/header";
-import { Shell } from "@/components/Shells/shell";
-import { Products } from "@/components/products";
+import { Header } from '@/components/header';
+import { Shell } from '@/components/Shells/shell';
+import { Products } from '@/components/products';
 
-import { Product } from "@/types";
-import { apiUrl } from "@/config/site-config";
-import axios from "axios";
+import { Config, Product } from '@/types';
+import { apiUrl } from '@/config/site-config';
+import axios from 'axios';
 
 export async function getProducts(sort?: string): Promise<Product[]> {
 	try {
@@ -14,8 +14,21 @@ export async function getProducts(sort?: string): Promise<Product[]> {
 		const { data } = responseData;
 		return data.results;
 	} catch (error) {
-		console.error("Error fetching product data:", error);
+		console.error('Error fetching product data:', error);
 		return [];
+	}
+}
+
+export async function getConfig() {
+	try {
+		const configApiUrl = `${apiUrl}/app/config`;
+		const response = await axios.get(configApiUrl);
+		const responseData = await response.data;
+		const { data } = responseData;
+		return data;
+	} catch (error) {
+		console.error('Error fetching config data:', error);
+		return null;
 	}
 }
 
@@ -26,14 +39,19 @@ interface ProductsPageProps {
 }
 
 export default async function ProductsPage({
-	searchParams,
+	searchParams
 }: ProductsPageProps) {
 	const { page, sort } = searchParams;
 
 	const data = (await getProducts(sort as string)) as Product[];
 
-	const limit = typeof searchParams.limit === "string" ? parseInt(searchParams.limit) : 100;
-	const offset = typeof page === "string" ? (parseInt(page) - 1) * limit : 0;
+	const config = (await getConfig()) as Config;
+
+	const limit =
+		typeof searchParams.limit === 'string'
+			? parseInt(searchParams.limit)
+			: 100;
+	const offset = typeof page === 'string' ? (parseInt(page) - 1) * limit : 0;
 
 	// const products = data.slice(offset, offset + limit);
 	const pageCount = Math.ceil(data.length / limit);
@@ -42,16 +60,17 @@ export default async function ProductsPage({
 		<div>
 			<Shell>
 				<Header
-					title="Vegetables"
-					description="Find a wide selection of vegetables that are fresh and according to your needs."
-					size="sm"
+					title='Vegetables'
+					description='Find a wide selection of vegetables that are fresh and according to your needs.'
+					heading={config.heading}
+					size='sm'
 				/>
 				<Products
 					products={data}
 					pageCount={pageCount}
-					page={typeof page === "string" ? page : undefined}
-					limit={typeof limit === "string" ? limit : undefined}
-					sort={typeof sort === "string" ? sort : undefined}
+					page={typeof page === 'string' ? page : undefined}
+					limit={typeof limit === 'string' ? limit : undefined}
+					sort={typeof sort === 'string' ? sort : undefined}
 				/>
 			</Shell>
 		</div>

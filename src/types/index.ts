@@ -49,6 +49,11 @@ export interface Product {
 	imageUrl: string;
 }
 
+export interface Config {
+	_id: string;
+	heading: string;
+}
+
 export interface OrderItem {
 	product: Product;
 	pack: Package;
