@@ -1,24 +1,26 @@
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
 interface HeaderProps extends React.HTMLAttributes<HTMLDivElement> {
 	title: string;
 	description?: string | null;
-	size?: "default" | "sm";
+	heading?: string | null;
+	size?: 'default' | 'sm';
 }
 
 export function Header({
 	title,
 	description,
-	size = "default",
+	heading,
+	size = 'default',
 	className,
 	...props
 }: HeaderProps) {
 	return (
-		<div className={cn("grid gap-1", className)} {...props}>
+		<div className={cn('grid gap-1', className)} {...props}>
 			<h1
 				className={cn(
-					"line-clamp-1 text-3xl font-bold tracking-tight",
-					size === "default" && "text-lg"
+					'line-clamp-1 text-3xl font-bold tracking-tight',
+					size === 'default' && 'text-lg'
 				)}
 			>
 				{title}
@@ -26,11 +28,21 @@ export function Header({
 			{description ? (
 				<p
 					className={cn(
-						"line-clamp-2 text-muted-foreground",
-						size === "default" && "text-lg"
+						'line-clamp-2 text-muted-foreground',
+						size === 'default' && 'text-lg'
 					)}
 				>
 					{description}
+				</p>
+			) : null}
+			{heading ? (
+				<p
+					className={cn(
+						'line-clamp-2 text-green-600 font-bold',
+						size === 'default' && 'text-lg'
+					)}
+				>
+					{heading}
 				</p>
 			) : null}
 		</div>

@@ -78,7 +78,7 @@ export function ProductCard({
 				loading='lazy'
 			/>
 			<Badge className='absolute right-4 top-[150px] justify-center hover:bg-red-600 bg-red-600 text-white font-bold text-base rounded-2xl p-2'>
-				{`₹${product?.marketPrice?.toUpperCase()}`}
+				{`₹${product?.marketPrice}`}
 			</Badge>
 			<CardContent className='grid gap-2.5 p-2'>
 				<CardTitle className='text-base'>
