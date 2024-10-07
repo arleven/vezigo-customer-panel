@@ -115,7 +115,7 @@ export function ProductCard({
 								<ToggleGroup
 									variant='outline'
 									type='single'
-									className='overflow-auto'
+									className='overflow-auto justify-between sm:justify-center'
 									size={'lg'}
 								>
 									{product.packages.map((pack, index) => (
