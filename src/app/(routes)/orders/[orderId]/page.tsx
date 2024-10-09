@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
 import {
 	Card,
 	CardHeader,
@@ -22,7 +21,7 @@ import { Order, OrderItem } from '@/types';
 import { apiUrl, links, siteConfig } from '@/config/site-config';
 import axios from 'axios';
 import { formatPrice } from '@/lib/utils';
-import { MessagesSquare } from 'lucide-react';
+import { MessagesSquare, PrinterIcon } from 'lucide-react';
 
 async function getOrder(orderId: string): Promise<Order> {
 	try {
@@ -68,6 +67,13 @@ export default async function OrderPage({ params }: OrderPageProps) {
 							on {orderDate}
 						</span>
 					</h1>
+					<Link
+						href={`/orders/${order.id}/print`}
+						target='_blank'
+						className='bg-slate-700 text-gray-100 p-2 rounded ml-auto'
+					>
+						<PrinterIcon />
+					</Link>
 				</div>
 				<div className='flex flex-col md:grid md:grid-cols-6 gap-6'>
 					<div className='md:col-span-4 lg:col-span-3 xl:col-span-4 flex flex-col gap-6'>
