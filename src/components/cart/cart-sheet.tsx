@@ -1,6 +1,6 @@
 'use client';
 
-import * as React from 'react';
+import { useEffect, useState } from 'react';
 import {
 	Sheet,
 	SheetClose,
@@ -23,6 +23,18 @@ import { cn, formatPrice } from '@/lib/utils';
 
 export default function CartSheet() {
 	const { cartItems, cartAmount, emptyCart } = useCart();
+	const [address, setAddress] = useState(null);
+
+	useEffect(() => {
+		const savedAddress: any = JSON.parse(localStorage.getItem('address'));
+
+		if (savedAddress) {
+			console.log('Saved address', savedAddress);
+			setAddress(savedAddress);
+		} else {
+			console.log('No saved address');
+		}
+	}, []);
 
 	return (
 		<Sheet>
@@ -113,6 +125,8 @@ export default function CartSheet() {
 												cartAmount={cartAmount}
 												emptyCart={emptyCart}
 												close={SheetClose}
+												address={address}
+												setAddress={setAddress}
 											/>
 										</div>
 									</div>
