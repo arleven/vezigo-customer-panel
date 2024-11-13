@@ -45,6 +45,7 @@ interface OrderPageProps {
 export default async function OrderPage({ params }: OrderPageProps) {
 	const { orderId } = params;
 	const order = (await getOrder(orderId)) as Order;
+
 	const orderDate = new Date(order.createdAt).toLocaleString([], {
 		dateStyle: 'medium',
 		timeStyle: 'medium'
@@ -143,7 +144,7 @@ export default async function OrderPage({ params }: OrderPageProps) {
 					</div>
 				</div>
 			</main>
-			<FloatingChatButton orderId={orderId} />
+			<FloatingChatButton order={order} />
 		</Shell>
 	);
 }
@@ -218,12 +219,12 @@ const CustomerDetailsCard = (props: { order: Order }) => {
 	);
 };
 
-const FloatingChatButton = (props: { orderId: string }) => {
+const FloatingChatButton = (props: { order: Order }) => {
 	return (
 		<div className='fixed bottom-4 right-4'>
 			<Link
 				className='bg-green-500 hover:bg-green-600 text-white rounded-full py-3 px-4 shadow-lg inline-flex items-center gap-2 font-bold'
-				href={`${links.regularWhatsAppApiUrl}?phone=${siteConfig.adminPhoneNumber}&text=Hi, I had query about order ID: ${props.orderId}`}
+				href={`${links.regularWhatsAppApiUrl}?phone=${siteConfig.adminPhoneNumber}&text=Hi, I had query about order ID: ${props.order.orderId}`}
 			>
 				<MessagesSquare className='w-6 h-6' />
 				Chat
