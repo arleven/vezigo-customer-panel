@@ -2,22 +2,20 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-
-import { MainNavItem, SidebarNavItem } from '@/types';
-import { siteConfig } from '@/config/site-config';
-
-import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet';
-import { ScrollArea } from '../ui/scroll-area';
-import { Button } from '../ui/button';
 import { Icons } from '../icons';
-import Image from 'next/image';
-import vezigoLogo from '../../assets/vezigo.png';
+import { MainNavItem } from '@/types';
+import { Button } from '../ui/button';
+import { ScrollArea } from '../ui/scroll-area';
+import Image, { StaticImageData } from 'next/image';
+import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet';
 
 interface MobileNavProps {
+	image: StaticImageData;
+	title: string;
 	mainNavItems?: MainNavItem[];
 }
 
-export function MobileNav({ mainNavItems }: MobileNavProps) {
+export function MobileNav({ mainNavItems, image, title }: MobileNavProps) {
 	const [isOpen, setIsOpen] = React.useState(false);
 	return (
 		<Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -34,16 +32,12 @@ export function MobileNav({ mainNavItems }: MobileNavProps) {
 				href='/'
 				className='inline items-center space-x-2 lg:hidden'
 			>
-				{/* <Icons.shoppingCart
-					className='h-6 w-6 ml-2'
-					aria-hidden='true'
-				/> */}
 				<Image
-					src={vezigoLogo}
-					width={50}
-					height={50}
+					src={image}
+					width={150}
+					height={150}
 					className='rounded'
-					alt='Vezigo Logo'
+					alt={`${title} Logo`}
 				/>
 			</Link>
 			<SheetContent side='left' className='pl-1 pr-0'>
@@ -58,7 +52,7 @@ export function MobileNav({ mainNavItems }: MobileNavProps) {
 							className='mr-2 h-4 w-4'
 							aria-hidden='true'
 						/>
-						<span className='font-bold'>{siteConfig.name}</span>
+						<span className='font-bold'>{title}</span>
 					</Link>
 				</div>
 				<ScrollArea className='my-6 h-[calc(100vh-8rem)] pb-10 pl-6'>

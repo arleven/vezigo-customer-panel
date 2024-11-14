@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button';
 import { useCart } from '@/context/cart-context';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import SparklesText from '@/components/ui/sparkles-text';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 
 import CartForm from './cart-form';
@@ -22,7 +23,7 @@ import { CartItem } from './cart-item';
 import { cn, formatPrice } from '@/lib/utils';
 
 export default function CartSheet() {
-	const { cartItems, cartAmount, emptyCart } = useCart();
+	const { cartItems, cartAmount, emptyCart, freeDelivery } = useCart();
 
 	return (
 		<Sheet>
@@ -62,6 +63,7 @@ export default function CartSheet() {
 				<Separator />
 				{cartItems.length > 0 ? (
 					<div className='flex flex-1 flex-col gap-5 overflow-hidden'>
+						{/* Cart Items */}
 						<ScrollArea className='h-full'>
 							<div className='flex flex-col gap-1 pr-6 overflow-visible'>
 								{cartItems.map((item, index) => (
@@ -77,6 +79,24 @@ export default function CartSheet() {
 							</div>
 						</ScrollArea>
 
+						{/* Order Offer */}
+						<div className='flex items-center space-x-1 pl-1 pr-7'>
+							{!freeDelivery ? (
+								<SparklesText
+									className='text-lg'
+									text={`Add items worth ₹${
+										240 - cartAmount
+									} or more to get a discount!`}
+								/>
+							) : (
+								<SparklesText
+									className='text-lg'
+									text="Congrats! You've got free delivery 🎉"
+								/>
+							)}
+						</div>
+
+						{/* Empty Cart Button */}
 						<div className='flex items-center space-x-1 pl-1 pr-7'>
 							<Button
 								className='items-center w-full'
@@ -89,6 +109,7 @@ export default function CartSheet() {
 							</Button>
 						</div>
 
+						{/* Checkout Button */}
 						<Dialog>
 							<div className='flex items-center space-x-1 pl-1 pr-7'>
 								<DialogTrigger asChild>
