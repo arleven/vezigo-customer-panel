@@ -30,22 +30,19 @@ const jodhpurBounds = {
 	east: 73.170,
 };
 
-const mainNavItems: MainNavItem[] = [
-	{
-		title: "Vegetables",
-		href: "/vegetables",
-	},
-	{
-		title: "Fruits",
-		href: "/fruits",
-	}
-];
-
-
 export const siteConfig = {
 	name: "Vezigo",
 	adminPhoneNumber: process.env.NEXT_PUBLIC_ADMIN_PHONE_NUMBER as string,
-	mainNav: mainNavItems,
+	mainNav: [
+		{
+			title: "Vegetables",
+			href: "/vegetables",
+		},
+		{
+			title: "Fruits",
+			href: "/fruits",
+		}
+	] as MainNavItem[],
 
 	footer: [
 		{

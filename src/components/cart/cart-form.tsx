@@ -45,23 +45,24 @@ const generateWhatsAppUrl = (
 ) => {
 	const mainMessage = `Hey There! I wanted to place a new order.${newLineChar}${newLineChar}Order ID: ${orderId}${newLineChar}Name: ${values.name}${newLineChar}Number: ${values.phone}${newLineChar}Alt. Phone Number: ${values.altPhone}${newLineChar}Address: ${values.address}${newLineChar}Notes: ${values.notes}${newLineChar}Order: ${links.siteAddress}/orders/${orderId}`;
 	return `${links.regularWhatsAppApiUrl}/${siteConfig.adminPhoneNumber}?text=${mainMessage}`;
+	// }
 };
 
 export default function CartForm(props: any) {
 	const [loading, setLoading] = React.useState<boolean>(false);
 	const [selectedPosition, setSelectedPosition] = React.useState(
-		props?.latLong ?? googleMap.defaultLatLong
+		googleMap.defaultLatLong
 	);
 	const [address, setAddress] = React.useState('');
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			name: props?.address?.name ?? '',
-			phone: props?.address?.phoneNumber ?? '',
-			altPhone: props?.address?.altPhoneNumber ?? '',
-			address: props?.address?.address ?? '',
-			notes: props?.address?.notes ?? ''
+			name: '',
+			phone: '',
+			altPhone: '',
+			address: '',
+			notes: ''
 		}
 	});
 
@@ -105,31 +106,7 @@ export default function CartForm(props: any) {
 					response.data.id,
 					values
 				);
-
 				props.emptyCart();
-
-				localStorage.setItem(
-					'address',
-					JSON.stringify({
-						name: values.name,
-						altPhoneNumber: values.altPhone,
-						phoneNumber: values.phone,
-						address: values.address,
-						notes: values.notes,
-						geo: selectedPosition
-					})
-				);
-
-				let orders = JSON.parse(localStorage.getItem('orders')) || [];
-
-				orders.push({
-					id: response.data.id,
-					orderId: response.data.orderId,
-					items: response.data.items,
-					billAmount: response.data.billAmount
-				});
-
-				localStorage.setItem('orders', JSON.stringify(orders));
 
 				const whatsAppLink = document.createElement('a');
 				whatsAppLink.href = whatsAppUrl;

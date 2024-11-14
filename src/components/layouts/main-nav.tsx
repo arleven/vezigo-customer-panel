@@ -6,13 +6,16 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
 import { MainNavItem } from '@/types';
+import { Icons } from '@/components/icons';
 import { siteConfig } from '@/config/site-config';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 import {
 	NavigationMenu,
 	NavigationMenuItem,
 	NavigationMenuLink,
-	NavigationMenuList
+	NavigationMenuList,
+	navigationMenuTriggerStyle
 } from '@/components/ui/navigation-menu';
 import Image from 'next/image';
 import vezigoLogo from '../../assets/vezigo.png';
@@ -22,24 +25,6 @@ interface MainNavProps {
 }
 
 export function MainNav({ mainNavItems }: MainNavProps) {
-	const orders: any = JSON.parse(localStorage.getItem('orders')) || [];
-
-	if (orders.length) {
-		const linkExists =
-			mainNavItems &&
-			mainNavItems.some(
-				(link) => link.title === 'Orders' && link.href === '/orders'
-			);
-
-		if (!linkExists) {
-			mainNavItems &&
-				mainNavItems.push({
-					title: 'Orders',
-					href: '/orders'
-				});
-		}
-	}
-
 	return (
 		<div className='hidden gap-6 lg:flex'>
 			<Link
