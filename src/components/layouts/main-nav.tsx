@@ -29,11 +29,15 @@ export function MainNav({ mainNavItems, image, title }: MainNavProps) {
 			>
 				<Image
 					src={image}
-					width={200}
-					height={200}
+					width={title === 'Vezigo' ? 50 : 200}
+					height={title === 'Vezigo' ? 50 : 200}
 					className='rounded'
 					alt={`${title} Logo`}
 				/>
+
+				<span className='hidden font-bold lg:inline-block text-lg md:text-lg'>
+					{title === 'Vezigo' ? title : ''}
+				</span>
 			</Link>
 
 			<NavigationMenu>

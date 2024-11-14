@@ -34,8 +34,8 @@ export function MobileNav({ mainNavItems, image, title }: MobileNavProps) {
 			>
 				<Image
 					src={image}
-					width={150}
-					height={150}
+					width={title === 'Vezigo' ? 50 : 150}
+					height={title === 'Vezigo' ? 50 : 150}
 					className='rounded'
 					alt={`${title} Logo`}
 				/>
