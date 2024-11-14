@@ -1,6 +1,4 @@
-'use client';
-
-import { useEffect } from 'react';
+import { headers } from 'next/headers';
 import CartSheet from '../cart/cart-sheet';
 import { StaticImageData } from 'next/image';
 import { siteConfig } from '@/config/site-config';
@@ -18,19 +16,21 @@ const SiteHeader = () => {
 	let image: StaticImageData = sabjiKingLogo;
 	let title: string = 'Sabji King';
 
-	useEffect(() => {
-		const origin = window.location.origin;
-		console.log('Portal:', window.location.origin);
-		if (origin === vezigoDomain) {
-			image = vezigoLogo;
-			title = 'Vezigo';
-		}
+	const headersList = headers();
+	const host = headersList.get('X-Forwarded-Host');
+	const proto = headersList.get('X-Forwarded-Proto');
 
-		if (origin === sabjiKingDomain) {
-			image = sabjiKingLogo;
-			title = 'Sabji King';
-		}
-	}, []);
+	console.log('Portal:', `${proto}://${host}`);
+
+	if (host === vezigoDomain) {
+		image = vezigoLogo;
+		title = 'Vezigo';
+	}
+
+	if (host === sabjiKingDomain) {
+		image = sabjiKingLogo;
+		title = 'Sabji King';
+	}
 
 	return (
 		<header
