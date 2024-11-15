@@ -52,6 +52,8 @@ export interface Product {
 export interface Config {
 	_id: string;
 	heading: string;
+	vegetablesDescription: string;
+	fruitsDescription: string;
 }
 
 export interface OrderItem {

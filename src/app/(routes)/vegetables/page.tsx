@@ -61,7 +61,7 @@ export default async function ProductsPage({
 			<Shell>
 				<Header
 					title='Vegetables'
-					description='Find a wide selection of vegetables that are fresh and according to your needs.'
+					description={config.vegetablesDescription}
 					heading={config.heading}
 					size='sm'
 				/>

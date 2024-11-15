@@ -53,7 +53,7 @@ export default async function ProductsPage({
 			: 100;
 	const offset = typeof page === 'string' ? (parseInt(page) - 1) * limit : 0;
 
-	const products = data.slice(offset, offset + limit);
+	// const products = data.slice(offset, offset + limit);
 	const pageCount = Math.ceil(data.length / limit);
 
 	return (
@@ -61,12 +61,12 @@ export default async function ProductsPage({
 			<Shell>
 				<Header
 					title='Fruits'
-					description='Find a wide selection of fruits that are fresh and according to your needs.'
+					description={config.fruitsDescription}
 					heading={config.heading}
 					size='sm'
 				/>
 				<Products
-					products={products}
+					products={data}
 					pageCount={pageCount}
 					page={typeof page === 'string' ? page : undefined}
 					limit={typeof limit === 'string' ? limit : undefined}
