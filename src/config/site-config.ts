@@ -78,3 +78,51 @@ export const siteConfig = {
 		zoom: 20
 	}
 };
+
+export const areas = [
+	{
+		label: 'Air Force',
+		value: 'air-force',
+		deliveryCost: 40
+	},
+	{
+		label: 'BGKT',
+		value: 'bgkt',
+		deliveryCost: 40
+	},
+	{
+		label: 'Jhalamand',
+		value: 'jhalamand',
+		deliveryCost: 40
+	},
+	{
+		label: 'Kudi Bhagtasni',
+		value: 'kudi-bhagtasni',
+		deliveryCost: 40
+	},
+	{
+		label: 'Paota',
+		value: 'paota',
+		deliveryCost: 40
+	},
+	{
+		label: 'Rameshwar Nagar',
+		value: 'rameshwar-nagar',
+		deliveryCost: 40
+	},
+	{
+		label: 'Ratanada',
+		value: 'ratanada',
+		deliveryCost: 40
+	},
+	{
+		label: 'Sardarpura',
+		value: 'sardarpura',
+		deliveryCost: 40
+	},
+	{
+		label: 'Shastri Nagar',
+		value: 'shastri-nagar',
+		deliveryCost: 40
+	}
+];

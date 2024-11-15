@@ -1,10 +1,9 @@
 'use client';
 
-import { createContext, useContext, useState } from 'react';
-import { type CartItem, Package, Product } from '@/types';
-import { useEffect } from 'react';
-import { apiUrl } from '@/config/site-config';
 import axios from 'axios';
+import { apiUrl } from '@/config/site-config';
+import { type CartItem, Package, Product } from '@/types';
+import { createContext, useContext, useState, useEffect } from 'react';
 
 interface CartContextValue {
 	cartItems: CartItem[];
@@ -16,7 +15,11 @@ interface CartContextValue {
 	cartAmount: number;
 	cartCount: number;
 	data: Product[];
+	freeDelivery: boolean;
 }
+
+const deliveryCost = 40;
+const minimumOrderCost = 200;
 
 const CartContext = createContext<CartContextValue>({
 	cartItems: [],
@@ -27,7 +30,8 @@ const CartContext = createContext<CartContextValue>({
 	cartTotal: 0,
 	cartAmount: 0,
 	cartCount: 0,
-	data: []
+	data: [],
+	freeDelivery: false
 });
 
 export const useCart = () => {
@@ -41,6 +45,7 @@ interface Props {
 export const CartProvider = ({ children }: Props) => {
 	const [cartItems, setCartItems] = useState<CartItem[]>([]);
 	const [cartAmount, setCartAmount] = useState<number>(0);
+	const [freeDelivery, setFreeDelivery] = useState<boolean>(false);
 	const [data, setData] = useState<Product[]>([]);
 
 	useEffect(() => {
@@ -67,7 +72,17 @@ export const CartProvider = ({ children }: Props) => {
 			totalAmount += Number(item.quantity) * Number(item.pack.price);
 		});
 
-		setCartAmount(totalAmount);
+		if (totalAmount > 0 && totalAmount < minimumOrderCost) {
+			setCartAmount(totalAmount + deliveryCost);
+		} else {
+			setCartAmount(totalAmount);
+		}
+
+		if (totalAmount >= minimumOrderCost) {
+			setFreeDelivery(true);
+		} else {
+			setFreeDelivery(false);
+		}
 	}, [cartItems]);
 
 	const addToCart = (pack: Package, product: Product) => {
@@ -136,7 +151,8 @@ export const CartProvider = ({ children }: Props) => {
 				cartTotal,
 				cartCount,
 				data,
-				cartAmount
+				cartAmount,
+				freeDelivery
 			}}
 		>
 			{children}

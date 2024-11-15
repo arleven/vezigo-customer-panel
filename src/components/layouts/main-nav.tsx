@@ -3,25 +3,26 @@
 import Link from 'next/link';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
-
 import { MainNavItem } from '@/types';
 import { siteConfig } from '@/config/site-config';
 
+import { StaticImageData } from 'next/image';
 import {
 	NavigationMenu,
 	NavigationMenuItem,
 	NavigationMenuLink,
 	NavigationMenuList
 } from '@/components/ui/navigation-menu';
-import Image from 'next/image';
-import vezigoLogo from '../../assets/vezigo.png';
 
 interface MainNavProps {
+	image: StaticImageData;
+	title: string;
 	mainNavItems?: MainNavItem[];
 }
 
-export function MainNav({ mainNavItems }: MainNavProps) {
+export function MainNav({ mainNavItems, image, title }: MainNavProps) {
 	const [orders, setOrders] = useState([]);
 	useEffect(() => {
 		if (typeof window !== 'undefined' && window.localStorage) {
@@ -55,22 +56,16 @@ export function MainNav({ mainNavItems }: MainNavProps) {
 				href='/'
 				className='hidden items-center space-x-2 lg:flex'
 			>
-				{/* <Icons.shoppingCart className='h-6 w-6' aria-hidden='true' /> */}
-				{/* <Avatar>
-					<AvatarImage src='https://github.com/shadcn.png' />
-					<AvatarFallback>CN</AvatarFallback>
-				</Avatar> */}
-
 				<Image
-					src={vezigoLogo}
-					width={50}
-					height={50}
+					src={image}
+					width={title === 'Vezigo' ? 50 : 200}
+					height={title === 'Vezigo' ? 50 : 200}
 					className='rounded'
-					alt='Vezigo Logo'
+					alt={`${title} Logo`}
 				/>
 
 				<span className='hidden font-bold lg:inline-block text-lg md:text-lg'>
-					{siteConfig.name}
+					{title === 'Vezigo' ? title : ''}
 				</span>
 			</Link>
 

@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-
 import {
 	Form,
 	FormControl,
@@ -13,7 +12,6 @@ import {
 	FormMessage
 } from '@/components/ui/form';
 import {
-	DialogClose,
 	DialogDescription,
 	DialogFooter,
 	DialogHeader,
@@ -90,8 +88,8 @@ export default function CartForm(props: any) {
 					altPhoneNumber: values.altPhone,
 					phoneNumber: values.phone,
 					address: values.address,
-					notes: values.notes,
-					area: 'Jodhpur'
+					area: props.selectedArea,
+					notes: values.notes
 				},
 				geo: selectedPosition
 			};
@@ -148,7 +146,10 @@ export default function CartForm(props: any) {
 			}
 		} catch (error: any) {
 			if (error?.response) {
-				console.log('error', error?.response?.data?.message);
+				console.error(
+					'Error while placing order',
+					error?.response?.data?.message
+				);
 			}
 		}
 		setLoading(false);
