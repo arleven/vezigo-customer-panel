@@ -75,7 +75,7 @@ const SparklesText: React.FC<SparklesTextProps> = ({
 			const starY = `${Math.random() * 100}%`;
 			const color = Math.random() > 0.5 ? colors.first : colors.second;
 			const delay = Math.random() * 2;
-			const scale = Math.random() * 1 + 0.3;
+			const scale = Math.random() * 0.6 + 0.1;
 			const lifespan = Math.random() * 10 + 5;
 			const id = `${starX}-${starY}-${Date.now()}`;
 			return { id, x: starX, y: starY, color, delay, scale, lifespan };
@@ -109,7 +109,7 @@ const SparklesText: React.FC<SparklesTextProps> = ({
 
 	return (
 		<div
-			className={cn('text-6xl font-bold', className)}
+			className={cn('text-6xl font-medium', className)}
 			{...props}
 			style={
 				{

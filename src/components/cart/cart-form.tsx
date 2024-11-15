@@ -1,9 +1,8 @@
-import axios from 'axios';
-import React from 'react';
 import { z } from 'zod';
+import axios from 'axios';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-
 import {
 	Form,
 	FormControl,
@@ -13,7 +12,6 @@ import {
 	FormMessage
 } from '@/components/ui/form';
 import {
-	DialogClose,
 	DialogDescription,
 	DialogFooter,
 	DialogHeader,
@@ -49,11 +47,11 @@ const generateWhatsAppUrl = (
 };
 
 export default function CartForm(props: any) {
-	const [loading, setLoading] = React.useState<boolean>(false);
-	const [selectedPosition, setSelectedPosition] = React.useState(
+	const [loading, setLoading] = useState<boolean>(false);
+	const [selectedPosition, setSelectedPosition] = useState(
 		googleMap.defaultLatLong
 	);
-	const [address, setAddress] = React.useState('');
+	const [address, setAddress] = useState('');
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -91,6 +89,7 @@ export default function CartForm(props: any) {
 					altPhoneNumber: values.altPhone,
 					phoneNumber: values.phone,
 					address: values.address,
+					area: props.selectedArea,
 					notes: values.notes
 				},
 				geo: selectedPosition
@@ -120,7 +119,10 @@ export default function CartForm(props: any) {
 			}
 		} catch (error: any) {
 			if (error?.response) {
-				console.log('error', error?.response?.data?.message);
+				console.error(
+					'Error while placing order',
+					error?.response?.data?.message
+				);
 			}
 		}
 		setLoading(false);
