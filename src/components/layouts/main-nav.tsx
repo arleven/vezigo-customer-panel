@@ -1,8 +1,8 @@
 'use client';
 
-import * as React from 'react';
 import Link from 'next/link';
 
+import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 
 import { MainNavItem } from '@/types';
@@ -22,9 +22,17 @@ interface MainNavProps {
 }
 
 export function MainNav({ mainNavItems }: MainNavProps) {
-	const orders: any = JSON.parse(localStorage.getItem('orders')) || [];
+	const [orders, setOrders] = useState([]);
+	useEffect(() => {
+		if (typeof window !== 'undefined' && window.localStorage) {
+			const localOrders = localStorage.getItem('orders') as string;
+			if (localOrders) {
+				setOrders(JSON.parse(localOrders));
+			}
+		}
+	}, []);
 
-	if (orders.length) {
+	if (orders) {
 		const linkExists =
 			mainNavItems &&
 			mainNavItems.some(

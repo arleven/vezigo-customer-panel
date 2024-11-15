@@ -4,9 +4,18 @@ import Link from 'next/link';
 import { Header } from '@/components/header';
 import { Shell } from '@/components/Shells/shell';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { useEffect, useState } from 'react';
 
 export default function OrderPage() {
-	const orders = JSON.parse(localStorage.getItem('orders'));
+	const [orders, setOrders] = useState([]);
+	useEffect(() => {
+		if (typeof window !== 'undefined' && window.localStorage) {
+			const localOrders = localStorage.getItem('orders') as string;
+			if (localOrders) {
+				setOrders(JSON.parse(localOrders));
+			}
+		}
+	}, []);
 
 	return (
 		<Shell as='div' className='gap-12'>

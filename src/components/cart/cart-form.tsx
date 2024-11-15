@@ -1,6 +1,6 @@
-import axios from 'axios';
-import React from 'react';
 import { z } from 'zod';
+import axios from 'axios';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -48,11 +48,11 @@ const generateWhatsAppUrl = (
 };
 
 export default function CartForm(props: any) {
-	const [loading, setLoading] = React.useState<boolean>(false);
-	const [selectedPosition, setSelectedPosition] = React.useState(
-		props?.latLong ?? googleMap.defaultLatLong
+	const [loading, setLoading] = useState<boolean>(false);
+	const [selectedPosition, setSelectedPosition] = useState(
+		props?.address?.geo ?? googleMap.defaultLatLong
 	);
-	const [address, setAddress] = React.useState('');
+	const [address, setAddress] = useState('');
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -90,7 +90,8 @@ export default function CartForm(props: any) {
 					altPhoneNumber: values.altPhone,
 					phoneNumber: values.phone,
 					address: values.address,
-					notes: values.notes
+					notes: values.notes,
+					area: 'Jodhpur'
 				},
 				geo: selectedPosition
 			};
@@ -108,28 +109,32 @@ export default function CartForm(props: any) {
 
 				props.emptyCart();
 
-				localStorage.setItem(
-					'address',
-					JSON.stringify({
-						name: values.name,
-						altPhoneNumber: values.altPhone,
-						phoneNumber: values.phone,
-						address: values.address,
-						notes: values.notes,
-						geo: selectedPosition
-					})
-				);
+				if (typeof window !== 'undefined' && window.localStorage) {
+					localStorage.setItem(
+						'address',
+						JSON.stringify({
+							name: values.name,
+							altPhoneNumber: values.altPhone,
+							phoneNumber: values.phone,
+							address: values.address,
+							notes: values.notes,
+							geo: selectedPosition
+						})
+					);
 
-				let orders = JSON.parse(localStorage.getItem('orders')) || [];
+					let orders =
+						JSON.parse(localStorage.getItem('orders') as string) ||
+						[];
 
-				orders.push({
-					id: response.data.id,
-					orderId: response.data.orderId,
-					items: response.data.items,
-					billAmount: response.data.billAmount
-				});
+					orders.push({
+						id: response.data.id,
+						orderId: response.data.orderId,
+						items: response.data.items,
+						billAmount: response.data.billAmount
+					});
 
-				localStorage.setItem('orders', JSON.stringify(orders));
+					localStorage.setItem('orders', JSON.stringify(orders));
+				}
 
 				const whatsAppLink = document.createElement('a');
 				whatsAppLink.href = whatsAppUrl;

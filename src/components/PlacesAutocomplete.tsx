@@ -115,6 +115,7 @@ export const PlacesAutocomplete = ({
 						className='text-black rounded-md bg-white text-base sm:w-full'
 						onValueChange={setValue}
 						disabled={!ready}
+						autoComplete='off'
 					/>
 
 					<CurrentLocationButton setLocation={setCurrentLocation} />

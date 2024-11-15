@@ -12,7 +12,7 @@ export default function GoogleMapsComponent(props: any) {
 		props;
 
 	const [currentPosition, setCurrentPosition] = useState(
-		googleMap.defaultLatLong
+		selectedPosition ?? googleMap.defaultLatLong
 	);
 
 	useEffect(() => {

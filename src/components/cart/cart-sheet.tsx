@@ -23,16 +23,14 @@ import { cn, formatPrice } from '@/lib/utils';
 
 export default function CartSheet() {
 	const { cartItems, cartAmount, emptyCart } = useCart();
-	const [address, setAddress] = useState(null);
+	const [address, setAddress] = useState('');
 
 	useEffect(() => {
-		const savedAddress: any = JSON.parse(localStorage.getItem('address'));
-
-		if (savedAddress) {
-			console.log('Saved address', savedAddress);
-			setAddress(savedAddress);
-		} else {
-			console.log('No saved address');
+		if (typeof window !== 'undefined' && window.localStorage) {
+			const localAddress = localStorage.getItem('address') as string;
+			if (localAddress) {
+				setAddress(JSON.parse(localAddress));
+			}
 		}
 	}, []);
 
