@@ -17,6 +17,7 @@ import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import SparklesText from '@/components/ui/sparkles-text';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import Ripple from '@/components/ui/ripple';
 
 import CartForm from './cart-form';
 import { CartItem } from './cart-item';
@@ -155,22 +156,34 @@ export default function CartSheet() {
 						{/* Checkout Button */}
 						<Dialog>
 							<div className='flex items-center space-x-1 pl-1 pr-7'>
-								<DialogTrigger asChild>
-									<Button
-										className='bg-green-500 hover:bg-green-600 text-white items-center w-full mb-1 rounded-lg'
-										type='button'
-										disabled={
-											cartAmount <= 0 || !selectedArea
-										}
-									>
-										Checkout{' '}
-										{cartAmount > 0 &&
-											`(${formatPrice(
-												cartAmount,
-												'INR'
-											)})`}
-									</Button>
-								</DialogTrigger>
+								{selectedArea ? (
+									<DialogTrigger asChild>
+										<Button
+											className='bg-green-500 hover:bg-green-600 text-white items-center w-full mb-1 rounded-lg'
+											type='button'
+											disabled={
+												cartAmount <= 0 || !selectedArea
+											}
+										>
+											Checkout{' '}
+											{cartAmount > 0 &&
+												`(${formatPrice(
+													cartAmount,
+													'INR'
+												)})`}
+										</Button>
+									</DialogTrigger>
+								) : (
+									<div className='relative flex h-[45px] w-full flex-col items-center justify-center overflow-hidden rounded-lg border md:shadow-xl'>
+										<p className='z-10 whitespace-pre-wrap text-center text-base font-medium tracking-tighter text-white'>
+											Select area first...
+										</p>
+										<Ripple
+											numCircles={5}
+											mainCircleOpacity={0.6}
+										/>
+									</div>
+								)}
 								<DialogContent className='rounded-xl lg:h-5/6 h-5/6 w-11/12 overflow-auto'>
 									<div className='columns-3xs'>
 										<div className='w-full aspect-square'>
