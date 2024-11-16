@@ -1,6 +1,6 @@
 'use client';
 
-import * as React from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import Link from 'next/link';
 import { Icons } from '../icons';
 import { MainNavItem } from '@/types';
@@ -16,7 +16,34 @@ interface MobileNavProps {
 }
 
 export function MobileNav({ mainNavItems, image, title }: MobileNavProps) {
-	const [isOpen, setIsOpen] = React.useState(false);
+	const [isOpen, setIsOpen] = useState(false);
+	const [orders, setOrders] = useState([]);
+
+	useEffect(() => {
+		if (typeof window !== 'undefined' && window.localStorage) {
+			const localOrders = localStorage.getItem('orders') as string;
+			if (localOrders) {
+				setOrders(JSON.parse(localOrders));
+			}
+		}
+	}, []);
+
+	if (orders.length > 0) {
+		const linkExists =
+			mainNavItems &&
+			mainNavItems.some(
+				(link) => link.title === 'Orders' && link.href === '/orders'
+			);
+
+		if (!linkExists) {
+			mainNavItems &&
+				mainNavItems.push({
+					title: 'Orders',
+					href: '/orders'
+				});
+		}
+	}
+
 	return (
 		<Sheet open={isOpen} onOpenChange={setIsOpen}>
 			<SheetTrigger asChild>
@@ -60,7 +87,7 @@ export function MobileNav({ mainNavItems, image, title }: MobileNavProps) {
 						{mainNavItems?.map(
 							(item, index) =>
 								item.href && (
-									<React.Fragment key={index}>
+									<Fragment key={index}>
 										<div className='flex flex-1 items-center justify-between py-4 font-medium text-sm transition-all hover:underline hover:cursor-pointer'>
 											<Link
 												href={item.href}
@@ -69,7 +96,7 @@ export function MobileNav({ mainNavItems, image, title }: MobileNavProps) {
 												{item.title}
 											</Link>
 										</div>
-									</React.Fragment>
+									</Fragment>
 								)
 						)}
 					</div>

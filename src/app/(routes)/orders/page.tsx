@@ -11,6 +11,7 @@ export default function OrderPage() {
 	useEffect(() => {
 		if (typeof window !== 'undefined' && window.localStorage) {
 			const localOrders = localStorage.getItem('orders') as string;
+			console.log('localOrders', localOrders);
 			if (localOrders) {
 				setOrders(JSON.parse(localOrders));
 			}
@@ -23,31 +24,43 @@ export default function OrderPage() {
 				<div className='flex flex-col md:grid md:grid-cols-6 gap-6'>
 					<div className='md:col-span-4 lg:col-span-3 xl:col-span-4 flex flex-col gap-6'>
 						<Header title='Order History' size='sm' />
-						{orders.map((order: any) => (
-							<Link key={order.id} href={`/orders/${order.id}`}>
-								<Card key={order.id}>
-									<CardHeader className='-mb-5'>
-										<CardTitle className='text-xl'>
-											Order ID: {order.orderId}
-										</CardTitle>
-									</CardHeader>
-									<CardContent>
-										<div className='flex items-center space-x-4'>
-											<div className='flex flex-1 flex-col gap-1 self-start text-sm'>
-												<span className='sm:text-base text-sm line-clamp-1'>
-													Ordered Quantity:{' '}
-													{order.items.length} Items
-												</span>
-												<span className='sm:text-base text-sm line-clamp-1'>
-													Billed Amount: ₹
-													{order.billAmount}
-												</span>
+						{orders.length ? (
+							orders.map((order: any) => (
+								<Link
+									key={order.id}
+									href={`/orders/${order.id}`}
+								>
+									<Card key={order.id}>
+										<CardHeader className='-mb-5'>
+											<CardTitle className='text-xl'>
+												Order ID: {order.orderId}
+											</CardTitle>
+										</CardHeader>
+										<CardContent>
+											<div className='flex items-center space-x-4'>
+												<div className='flex flex-1 flex-col gap-1 self-start text-sm'>
+													<span className='sm:text-base text-sm line-clamp-1'>
+														Ordered Quantity:{' '}
+														{order.items.length}{' '}
+														Items
+													</span>
+													<span className='sm:text-base text-sm line-clamp-1'>
+														Billed Amount: ₹
+														{order.billAmount}
+													</span>
+												</div>
 											</div>
-										</div>
-									</CardContent>
-								</Card>
-							</Link>
-						))}
+										</CardContent>
+									</Card>
+								</Link>
+							))
+						) : (
+							<h1 className='font-semibold text-lg md:text-xl'>
+								<span className='font-normal text-gray-500 dark:text-gray-400'>
+									No order history found 😢
+								</span>
+							</h1>
+						)}
 					</div>
 				</div>
 			</main>

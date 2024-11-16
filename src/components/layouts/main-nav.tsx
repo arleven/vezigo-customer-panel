@@ -33,7 +33,7 @@ export function MainNav({ mainNavItems, image, title }: MainNavProps) {
 		}
 	}, []);
 
-	if (orders) {
+	if (orders.length > 0) {
 		const linkExists =
 			mainNavItems &&
 			mainNavItems.some(
