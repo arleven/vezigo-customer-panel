@@ -33,11 +33,18 @@ import {
 import { Zone } from '@/types';
 
 export default function CartSheet(props: { zones: Zone[] }) {
-	const { cartItems, cartAmount, emptyCart, freeDelivery } = useCart();
+	const {
+		cartItems,
+		cartAmount,
+		emptyCart,
+		freeDelivery,
+		updateDeliveryCost,
+		deliveryCost,
+		billAmount
+	} = useCart();
 	const [address, setAddress] = useState('');
 	const [selectedArea, setSelectedArea] = useState('');
-	const minimumOrderCost = 199;
-	const deliveryCost = 40;
+	const minimumOrderCost = 200;
 
 	useEffect(() => {
 		if (typeof window !== 'undefined' && window.localStorage) {
@@ -48,13 +55,23 @@ export default function CartSheet(props: { zones: Zone[] }) {
 		}
 	}, []);
 
+	const getDeliveryCostById = (id: string) => {
+		const zone = props.zones.find((loc) => loc.id === id);
+		return zone ? Number(zone.deliveryCost) : 0;
+	};
+
 	const handleSelectChange = (value: string) => {
 		console.log('Selected Area', value);
 		setSelectedArea(value);
+
+		const costToDeliver = getDeliveryCostById(value);
+		console.log('costToDeliver', costToDeliver);
+
+		updateDeliveryCost(costToDeliver);
 	};
 
-	const freeDeliveryText = `Free delivery above ₹${minimumOrderCost}, add items worth ₹${
-		minimumOrderCost + deliveryCost - cartAmount
+	const freeDeliveryText = `Delivery charges: ₹${deliveryCost}. Add items worth ₹${
+		minimumOrderCost - cartAmount
 	} or more to get free delivery!`;
 
 	return (
@@ -105,7 +122,7 @@ export default function CartSheet(props: { zones: Zone[] }) {
 											key={index}
 											className='hover:bg-green-100 cursor-pointer'
 										>
-											{zone.title}
+											{zone.title} (₹{zone.deliveryCost})
 										</SelectItem>
 									)
 								)}
@@ -175,7 +192,7 @@ export default function CartSheet(props: { zones: Zone[] }) {
 											Checkout{' '}
 											{cartAmount > 0 &&
 												`(${formatPrice(
-													cartAmount,
+													billAmount,
 													'INR'
 												)})`}
 										</Button>

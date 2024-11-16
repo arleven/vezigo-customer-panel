@@ -16,10 +16,10 @@ interface CartContextValue {
 	cartCount: number;
 	data: Product[];
 	freeDelivery: boolean;
+	deliveryCost: number;
+	updateDeliveryCost: (cost: number) => void;
+	billAmount: number;
 }
-
-const deliveryCost = 40;
-const minimumOrderCost = 199;
 
 const CartContext = createContext<CartContextValue>({
 	cartItems: [],
@@ -31,7 +31,10 @@ const CartContext = createContext<CartContextValue>({
 	cartAmount: 0,
 	cartCount: 0,
 	data: [],
-	freeDelivery: false
+	freeDelivery: false,
+	deliveryCost: 0,
+	updateDeliveryCost: () => {},
+	billAmount: 0
 });
 
 export const useCart = () => {
@@ -47,6 +50,10 @@ export const CartProvider = ({ children }: Props) => {
 	const [cartAmount, setCartAmount] = useState<number>(0);
 	const [freeDelivery, setFreeDelivery] = useState<boolean>(false);
 	const [data, setData] = useState<Product[]>([]);
+	const [deliveryCost, setDeliveryCost] = useState<number>(0);
+	const [billAmount, setBillAmount] = useState<number>(0);
+
+	const minimumOrderValue = 200;
 
 	useEffect(() => {
 		// Fetch product data
@@ -65,25 +72,31 @@ export const CartProvider = ({ children }: Props) => {
 		fetchProductData();
 	}, []);
 
-	let totalAmount: number = 0;
+	let totalBillAmount: number = 0;
 
 	useEffect(() => {
+		/* const amountIsLessThanMinimumOrderValue =
+			totalBillAmount > 0 && totalBillAmount < minimumOrderValue; */
 		cartItems.forEach((item: any) => {
-			totalAmount += Number(item.quantity) * Number(item.pack.price);
+			totalBillAmount += Number(item.quantity) * Number(item.pack.price);
 		});
 
-		if (totalAmount > 0 && totalAmount < minimumOrderCost) {
-			setCartAmount(totalAmount + deliveryCost);
-		} else {
-			setCartAmount(totalAmount);
-		}
+		setCartAmount(totalBillAmount);
 
-		if (totalAmount >= minimumOrderCost) {
+		if (totalBillAmount >= minimumOrderValue) {
 			setFreeDelivery(true);
 		} else {
 			setFreeDelivery(false);
 		}
-	}, [cartItems]);
+	}, [cartItems, deliveryCost]);
+
+	useEffect(() => {
+		if (totalBillAmount > 0 && totalBillAmount < minimumOrderValue) {
+			setBillAmount(cartAmount + deliveryCost);
+		} else {
+			setBillAmount(cartAmount);
+		}
+	}, [cartItems, cartAmount, deliveryCost]);
 
 	const addToCart = (pack: Package, product: Product) => {
 		const existingCartItemIndex = cartItems.findIndex(
@@ -140,6 +153,10 @@ export const CartProvider = ({ children }: Props) => {
 		0
 	);
 
+	const updateDeliveryCost = (cost: number) => {
+		setDeliveryCost(cost);
+	};
+
 	return (
 		<CartContext.Provider
 			value={{
@@ -152,7 +169,10 @@ export const CartProvider = ({ children }: Props) => {
 				cartCount,
 				data,
 				cartAmount,
-				freeDelivery
+				freeDelivery,
+				deliveryCost,
+				updateDeliveryCost,
+				billAmount
 			}}
 		>
 			{children}
