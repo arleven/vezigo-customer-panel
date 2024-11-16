@@ -134,7 +134,7 @@ export default function CartSheet() {
 									className='text-sm'
 									text={`Add items worth ₹${
 										240 - cartAmount
-									} or more to get a discount!`}
+									} or more to get free delivery!`}
 								/>
 							) : (
 								<SparklesText
