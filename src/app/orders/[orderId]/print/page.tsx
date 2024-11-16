@@ -37,6 +37,9 @@ interface OrderPageProps {
 export default async function OrderPage({ params }: OrderPageProps) {
 	const { orderId } = params;
 	const order = (await getOrder(orderId)) as Order;
+
+	const deliveryCost = formatPrice(Number(40), 'INR');
+
 	const orderDate = new Date(order.createdAt).toLocaleString([], {
 		dateStyle: 'medium',
 		timeStyle: 'medium'
@@ -136,7 +139,10 @@ export default async function OrderPage({ params }: OrderPageProps) {
 										</Table>
 									</CardContent>
 								</Card>
-								<PaymentCard billAmount={billAmount} />
+								<PaymentCard
+									billAmount={billAmount}
+									deliveryCost={deliveryCost}
+								/>
 							</div>
 							<div className='md:col-span-2 lg:col-span-3 xl:col-span-2 flex flex-col gap-6'>
 								<CustomerDetailsCard order={order} />
@@ -149,7 +155,7 @@ export default async function OrderPage({ params }: OrderPageProps) {
 	);
 }
 
-const PaymentCard = (props: { billAmount: string }) => {
+const PaymentCard = (props: { billAmount: string; deliveryCost: string }) => {
 	return (
 		<Card>
 			<CardHeader>
@@ -159,6 +165,11 @@ const PaymentCard = (props: { billAmount: string }) => {
 				<div className='flex items-center'>
 					<div>Mode</div>
 					<div className='ml-auto'>Offline</div>
+				</div>
+				<Separator />
+				<div className='flex items-center'>
+					<div>Delivery Cost</div>
+					<div className='ml-auto'>{props.deliveryCost}</div>
 				</div>
 				<Separator />
 				<div className='flex items-center font-medium'>
