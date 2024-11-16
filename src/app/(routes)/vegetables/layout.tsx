@@ -5,7 +5,7 @@ interface ProductsLayoutProps {
 }
 
 export const metadata: Metadata = {
-	title: 'Vezigo | Vegetables',
+	title: 'Sabji King | Vegetables',
 	description: 'Discover the best and fresh vegetables for all your needs'
 };
 

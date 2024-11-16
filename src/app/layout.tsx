@@ -14,7 +14,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-	title: 'Vezigo',
+	title: 'Sabji King',
 	description:
 		'Discover the best and fresh fruits and vegetables for all your needs'
 };

@@ -5,7 +5,7 @@ interface OrdersLayoutProps {
 }
 
 export const metadata: Metadata = {
-	title: 'Vezigo | Orders',
+	title: 'Sabji King | Orders',
 	description: 'Discover the best and fresh vegetables for all your needs'
 };
 

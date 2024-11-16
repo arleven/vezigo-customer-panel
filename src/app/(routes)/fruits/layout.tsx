@@ -5,7 +5,7 @@ interface ProductsLayoutProps {
 }
 
 export const metadata: Metadata = {
-	title: 'Vezigo | Fruits',
+	title: 'Sabji King | Fruits',
 	description: 'Discover the best and fresh fruits for all your needs'
 };
 
