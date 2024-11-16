@@ -36,6 +36,8 @@ export default function CartSheet() {
 	const { cartItems, cartAmount, emptyCart, freeDelivery } = useCart();
 	const [address, setAddress] = useState('');
 	const [selectedArea, setSelectedArea] = useState('');
+	const minimumOrderCost = 199;
+	const deliveryCost = 40;
 
 	useEffect(() => {
 		if (typeof window !== 'undefined' && window.localStorage) {
@@ -132,8 +134,10 @@ export default function CartSheet() {
 							{!freeDelivery ? (
 								<SparklesText
 									className='text-sm'
-									text={`Add items worth ₹${
-										240 - cartAmount
+									text={`Free delivery above ₹${minimumOrderCost}, add items worth ₹${
+										minimumOrderCost +
+										deliveryCost -
+										cartAmount
 									} or more to get free delivery!`}
 								/>
 							) : (

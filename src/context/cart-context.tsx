@@ -19,7 +19,7 @@ interface CartContextValue {
 }
 
 const deliveryCost = 40;
-const minimumOrderCost = 200;
+const minimumOrderCost = 199;
 
 const CartContext = createContext<CartContextValue>({
 	cartItems: [],
