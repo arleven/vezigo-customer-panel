@@ -38,11 +38,12 @@ const formSchema = z.object({
 const newLineChar = '%0a';
 
 const generateWhatsAppUrl = (
+	id: string,
 	orderId: string,
 	siteAddress: string,
 	values: z.infer<typeof formSchema>
 ) => {
-	const mainMessage = `Hey There! I wanted to place a new order.${newLineChar}${newLineChar}Order ID: ${orderId}${newLineChar}Name: ${values.name}${newLineChar}Number: ${values.phone}${newLineChar}Alt. Phone Number: ${values.altPhone}${newLineChar}Address: ${values.address}${newLineChar}Notes: ${values.notes}${newLineChar}Order: ${siteAddress}/orders/${orderId}`;
+	const mainMessage = `Hey There! I wanted to place a new order.${newLineChar}${newLineChar}Order ID: ${orderId}${newLineChar}Name: ${values.name}${newLineChar}Number: ${values.phone}${newLineChar}Alt. Phone Number: ${values.altPhone}${newLineChar}Address: ${values.address}${newLineChar}Notes: ${values.notes}${newLineChar}Order: ${siteAddress}/orders/${id}`;
 	return `${links.regularWhatsAppApiUrl}/${siteConfig.adminPhoneNumber}?text=${mainMessage}`;
 };
 
@@ -104,6 +105,7 @@ export default function CartForm(props: any) {
 
 			if (response.code === 201) {
 				const whatsAppUrl = generateWhatsAppUrl(
+					response.data.id,
 					response.data.orderId,
 					siteAddress,
 					values
