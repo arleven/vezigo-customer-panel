@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react';
 import SiteHeader from '@/components/layouts/site-header';
 import SiteFooter from '@/components/layouts/site-footer';
 
@@ -12,6 +13,7 @@ export default function RootLayout({
 				<SiteHeader />
 				<main className='bg-gray-100'>{children}</main>
 				{/* <SiteFooter /> */}
+				<Analytics />
 			</body>
 		</html>
 	);
