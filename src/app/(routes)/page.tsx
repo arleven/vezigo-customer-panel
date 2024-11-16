@@ -36,7 +36,7 @@ export default async function HomePage() {
 				className='mx-auto flex flex-col w-full max-w[64rem] items-center justify-center text-center gap-4 pb-2 pt-2 md:pb-2 md:pt-2 lg:py-2'
 			>
 				<h1 id='hero-heading' className='text-4xl font-bold'>
-					Welcome to {siteConfig.name}
+					Welcome to Sabji King
 				</h1>
 				<p className='text-xl text-muted-foreground'>
 					Discover the best and fresh vegetables for all your needs

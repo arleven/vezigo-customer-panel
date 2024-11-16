@@ -39,9 +39,10 @@ const newLineChar = '%0a';
 
 const generateWhatsAppUrl = (
 	orderId: string,
+	siteAddress: string,
 	values: z.infer<typeof formSchema>
 ) => {
-	const mainMessage = `Hey There! I wanted to place a new order.${newLineChar}${newLineChar}Order ID: ${orderId}${newLineChar}Name: ${values.name}${newLineChar}Number: ${values.phone}${newLineChar}Alt. Phone Number: ${values.altPhone}${newLineChar}Address: ${values.address}${newLineChar}Notes: ${values.notes}${newLineChar}Order: ${links.siteAddress}/orders/${orderId}`;
+	const mainMessage = `Hey There! I wanted to place a new order.${newLineChar}${newLineChar}Order ID: ${orderId}${newLineChar}Name: ${values.name}${newLineChar}Number: ${values.phone}${newLineChar}Alt. Phone Number: ${values.altPhone}${newLineChar}Address: ${values.address}${newLineChar}Notes: ${values.notes}${newLineChar}Order: ${siteAddress}/orders/${orderId}`;
 	return `${links.regularWhatsAppApiUrl}/${siteConfig.adminPhoneNumber}?text=${mainMessage}`;
 };
 
@@ -51,6 +52,8 @@ export default function CartForm(props: any) {
 		props?.address?.geo ?? googleMap.defaultLatLong
 	);
 	const [address, setAddress] = useState('');
+
+	const siteAddress = 'https://sabjiking.in';
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -102,6 +105,7 @@ export default function CartForm(props: any) {
 			if (response.code === 201) {
 				const whatsAppUrl = generateWhatsAppUrl(
 					response.data.id,
+					siteAddress,
 					values
 				);
 
@@ -141,7 +145,7 @@ export default function CartForm(props: any) {
 				whatsAppLink.click();
 
 				const orderPageLink = document.createElement('a');
-				orderPageLink.href = `${links.siteAddress}/orders/${response.data.id}`;
+				orderPageLink.href = `${siteAddress}/orders/${response.data.id}`;
 				orderPageLink.click();
 			}
 		} catch (error: any) {
