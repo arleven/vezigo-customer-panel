@@ -96,7 +96,11 @@ export default function CartSheet() {
 							</SelectTrigger>
 							<SelectContent>
 								{areas.map((area, index) => (
-									<SelectItem value={area.value} key={index}>
+									<SelectItem
+										value={area.value}
+										key={index}
+										className='hover:bg-green-100 cursor-pointer'
+									>
 										{area.label}
 									</SelectItem>
 								))}
