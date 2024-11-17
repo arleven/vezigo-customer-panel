@@ -52,6 +52,7 @@ export const CartProvider = ({ children }: Props) => {
 	const [data, setData] = useState<Product[]>([]);
 	const [deliveryCost, setDeliveryCost] = useState<number>(0);
 	const [billAmount, setBillAmount] = useState<number>(0);
+	const [totalBillAmount, setTotalBillAmount] = useState<number>(0);
 
 	const minimumOrderValue = 200;
 
@@ -72,13 +73,13 @@ export const CartProvider = ({ children }: Props) => {
 		fetchProductData();
 	}, []);
 
-	let totalBillAmount: number = 0;
-
 	useEffect(() => {
 		/* const amountIsLessThanMinimumOrderValue =
 			totalBillAmount > 0 && totalBillAmount < minimumOrderValue; */
+		let tba = 0;
 		cartItems.forEach((item: any) => {
-			totalBillAmount += Number(item.quantity) * Number(item.pack.price);
+			tba += Number(item.quantity) * Number(item.pack.price);
+			setTotalBillAmount(tba);
 		});
 
 		setCartAmount(totalBillAmount);
@@ -91,10 +92,14 @@ export const CartProvider = ({ children }: Props) => {
 	}, [cartItems, deliveryCost]);
 
 	useEffect(() => {
-		if (totalBillAmount > 0 && totalBillAmount < minimumOrderValue) {
-			setBillAmount(cartAmount + deliveryCost);
-		} else {
-			setBillAmount(cartAmount);
+		if (totalBillAmount > 0) {
+			if (totalBillAmount < minimumOrderValue) {
+				console.log('her');
+				setBillAmount(cartAmount + deliveryCost);
+			} else {
+				console.log('her2');
+				setBillAmount(cartAmount);
+			}
 		}
 	}, [cartItems, cartAmount, deliveryCost]);
 
