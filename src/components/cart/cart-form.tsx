@@ -20,7 +20,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { apiUrl, links, siteConfig } from '@/config/site-config';
+import { apiUrl, siteConfig } from '@/config/site-config';
 
 import GoogleMapsComponent from '../google-maps';
 import { Icons } from '../icons';
@@ -34,18 +34,6 @@ const formSchema = z.object({
 	address: z.string().min(2, 'Your address is required').max(200).trim(),
 	notes: z.string().max(200).trim().optional()
 });
-
-const newLineChar = '%0a';
-
-const generateWhatsAppUrl = (
-	id: string,
-	orderId: string,
-	siteAddress: string,
-	values: z.infer<typeof formSchema>
-) => {
-	const mainMessage = `Hey There! I wanted to place a new order.${newLineChar}${newLineChar}Order ID: ${orderId}${newLineChar}Name: ${values.name}${newLineChar}Number: ${values.phone}${newLineChar}Alt. Phone Number: ${values.altPhone}${newLineChar}Address: ${values.address}${newLineChar}Notes: ${values.notes}${newLineChar}Order: ${siteAddress}/orders/${id}`;
-	return `${links.regularWhatsAppApiUrl}/${siteConfig.adminPhoneNumber}?text=${mainMessage}`;
-};
 
 export default function CartForm(props: any) {
 	const [loading, setLoading] = useState<boolean>(false);
@@ -104,15 +92,6 @@ export default function CartForm(props: any) {
 			const response = await res.data;
 
 			if (response.code === 201) {
-				const whatsAppUrl = generateWhatsAppUrl(
-					response.data.id,
-					response.data.orderId,
-					siteAddress,
-					values
-				);
-
-				props.emptyCart();
-
 				if (typeof window !== 'undefined' && window.localStorage) {
 					localStorage.setItem(
 						'address',
@@ -140,11 +119,7 @@ export default function CartForm(props: any) {
 					localStorage.setItem('orders', JSON.stringify(orders));
 				}
 
-				const whatsAppLink = document.createElement('a');
-				whatsAppLink.href = whatsAppUrl;
-				whatsAppLink.target = '_blank';
-				whatsAppLink.rel = 'noopener noreferrer';
-				whatsAppLink.click();
+				props.emptyCart();
 
 				const orderPageLink = document.createElement('a');
 				orderPageLink.href = `${siteAddress}/orders/${response.data.id}`;
