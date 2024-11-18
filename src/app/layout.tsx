@@ -1,5 +1,6 @@
 import '@/styles/globals.css';
 
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { ThemeProvider } from '@/components/theme-provider';
 
 import type { Metadata } from 'next';
@@ -37,6 +38,7 @@ export default function RootLayout({
 				<body className={cn('bg-gray-100', poppins.className)}>
 					<ThemeProvider attribute='class' defaultTheme='light'>
 						{children}
+						<SpeedInsights />
 					</ThemeProvider>
 				</body>
 			</html>
