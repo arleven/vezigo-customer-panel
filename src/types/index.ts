@@ -49,11 +49,18 @@ export interface Product {
 	imageUrl: string;
 }
 
+export interface Zone {
+	id: string;
+	title: string;
+	deliveryCost: string;
+}
+
 export interface Config {
 	_id: string;
 	heading: string;
 	vegetablesDescription: string;
 	fruitsDescription: string;
+	minimumOrderValue: string;
 }
 
 export interface OrderItem {

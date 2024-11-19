@@ -7,31 +7,38 @@ import { createContext, useContext, useState, useEffect } from 'react';
 
 interface CartContextValue {
 	cartItems: CartItem[];
-	addToCart: (pack: Package, product: Product) => void;
-	removeFromCart: (productId: string) => void;
-	emptyCart: () => void;
-	updateCartItemQuantity: (productId: string, quantity: number) => void;
 	cartTotal: number;
 	cartAmount: number;
 	cartCount: number;
 	data: Product[];
 	freeDelivery: boolean;
+	deliveryCost: number;
+	billAmount: number;
+	minimumOrderValue: number;
+	addToCart: (pack: Package, product: Product) => void;
+	removeFromCart: (productId: string) => void;
+	emptyCart: () => void;
+	updateCartItemQuantity: (productId: string, quantity: number) => void;
+	updateDeliveryCost: (cost: number) => void;
+	updateMinimumOrderValue: (value: number) => void;
 }
-
-const deliveryCost = 40;
-const minimumOrderCost = 199;
 
 const CartContext = createContext<CartContextValue>({
 	cartItems: [],
-	addToCart: () => {},
-	removeFromCart: () => {},
-	emptyCart: () => {},
-	updateCartItemQuantity: () => {},
 	cartTotal: 0,
 	cartAmount: 0,
 	cartCount: 0,
 	data: [],
-	freeDelivery: false
+	freeDelivery: false,
+	deliveryCost: 0,
+	billAmount: 0,
+	minimumOrderValue: 199,
+	addToCart: () => {},
+	removeFromCart: () => {},
+	emptyCart: () => {},
+	updateCartItemQuantity: () => {},
+	updateDeliveryCost: () => {},
+	updateMinimumOrderValue: () => {}
 });
 
 export const useCart = () => {
@@ -47,6 +54,10 @@ export const CartProvider = ({ children }: Props) => {
 	const [cartAmount, setCartAmount] = useState<number>(0);
 	const [freeDelivery, setFreeDelivery] = useState<boolean>(false);
 	const [data, setData] = useState<Product[]>([]);
+	const [deliveryCost, setDeliveryCost] = useState<number>(0);
+	const [billAmount, setBillAmount] = useState<number>(0);
+	const [totalBillAmount, setTotalBillAmount] = useState<number>(0);
+	const [minimumOrderValue, setMinimumOrderValue] = useState<number>(0);
 
 	useEffect(() => {
 		// Fetch product data
@@ -65,25 +76,29 @@ export const CartProvider = ({ children }: Props) => {
 		fetchProductData();
 	}, []);
 
-	let totalAmount: number = 0;
-
 	useEffect(() => {
+		let tba = 0;
 		cartItems.forEach((item: any) => {
-			totalAmount += Number(item.quantity) * Number(item.pack.price);
+			tba += Number(item.quantity) * Number(item.pack.price);
+			setTotalBillAmount(tba);
 		});
 
-		if (totalAmount > 0 && totalAmount < minimumOrderCost) {
-			setCartAmount(totalAmount + deliveryCost);
-		} else {
-			setCartAmount(totalAmount);
-		}
+		setCartAmount(tba);
 
-		if (totalAmount >= minimumOrderCost) {
+		if (totalBillAmount >= minimumOrderValue) {
 			setFreeDelivery(true);
 		} else {
 			setFreeDelivery(false);
 		}
-	}, [cartItems]);
+
+		if (totalBillAmount > 0) {
+			if (totalBillAmount < minimumOrderValue) {
+				setBillAmount(cartAmount + deliveryCost);
+			} else {
+				setBillAmount(cartAmount);
+			}
+		}
+	}, [cartItems, cartAmount, deliveryCost]);
 
 	const addToCart = (pack: Package, product: Product) => {
 		const existingCartItemIndex = cartItems.findIndex(
@@ -140,19 +155,34 @@ export const CartProvider = ({ children }: Props) => {
 		0
 	);
 
+	const updateDeliveryCost = (cost: number) => {
+		setDeliveryCost(cost);
+	};
+
+	const updateMinimumOrderValue = (value: number) => {
+		console.log('value', value);
+
+		setMinimumOrderValue(value);
+	};
+
 	return (
 		<CartContext.Provider
 			value={{
 				cartItems,
-				addToCart,
-				removeFromCart,
-				emptyCart,
-				updateCartItemQuantity,
 				cartTotal,
 				cartCount,
 				data,
 				cartAmount,
-				freeDelivery
+				freeDelivery,
+				deliveryCost,
+				billAmount,
+				minimumOrderValue,
+				addToCart,
+				removeFromCart,
+				emptyCart,
+				updateCartItemQuantity,
+				updateDeliveryCost,
+				updateMinimumOrderValue
 			}}
 		>
 			{children}

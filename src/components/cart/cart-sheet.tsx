@@ -30,14 +30,21 @@ import {
 	SelectValue
 } from '@/components/ui/select';
 
-import { areas } from '@/config/site-config';
+import { Zone } from '@/types';
 
-export default function CartSheet() {
-	const { cartItems, cartAmount, emptyCart, freeDelivery } = useCart();
+export default function CartSheet(props: { zones: Zone[] }) {
+	const {
+		cartItems,
+		cartAmount,
+		freeDelivery,
+		deliveryCost,
+		billAmount,
+		minimumOrderValue,
+		emptyCart,
+		updateDeliveryCost
+	} = useCart();
 	const [address, setAddress] = useState('');
 	const [selectedArea, setSelectedArea] = useState('');
-	const minimumOrderCost = 199;
-	const deliveryCost = 40;
 
 	useEffect(() => {
 		if (typeof window !== 'undefined' && window.localStorage) {
@@ -48,10 +55,20 @@ export default function CartSheet() {
 		}
 	}, []);
 
-	const handleSelectChange = (value: string) => {
-		console.log('Selected Area', value);
-		setSelectedArea(value);
+	const getDeliveryCostById = (id: string) => {
+		const zone = props.zones.find((loc) => loc.id === id);
+		return zone ? Number(zone.deliveryCost) : 0;
 	};
+
+	const handleSelectChange = (value: string) => {
+		setSelectedArea(value);
+		const costToDeliver = getDeliveryCostById(value);
+		updateDeliveryCost(costToDeliver);
+	};
+
+	const deliveryLabel = `Delivery charges: ₹${deliveryCost}. Add items worth ₹${
+		minimumOrderValue - cartAmount
+	} or more to get free delivery!`;
 
 	return (
 		<Sheet>
@@ -84,9 +101,6 @@ export default function CartSheet() {
 			</SheetTrigger>
 			<SheetContent className='flex w-full flex-col pr-0 sm:max-w-lg'>
 				<SheetHeader className='px-1'>
-					{/* <SheetTitle>
-						Cart {cartItems.length > 0 && `(${cartItems.length})`}
-					</SheetTitle> */}
 					<SheetTitle className='flex items-center gap-2'>
 						<span className='mr-2'>Deliver to</span>
 						<Select
@@ -97,15 +111,17 @@ export default function CartSheet() {
 								<SelectValue placeholder='Area' />
 							</SelectTrigger>
 							<SelectContent>
-								{areas.map((area, index) => (
-									<SelectItem
-										value={area.value}
-										key={index}
-										className='hover:bg-green-100 cursor-pointer'
-									>
-										{area.label}
-									</SelectItem>
-								))}
+								{props.zones.map(
+									(zone: Zone, index: number) => (
+										<SelectItem
+											value={zone.id}
+											key={index}
+											className='hover:bg-green-100 cursor-pointer'
+										>
+											{zone.title}
+										</SelectItem>
+									)
+								)}
 							</SelectContent>
 						</Select>
 					</SheetTitle>
@@ -130,23 +146,25 @@ export default function CartSheet() {
 						</ScrollArea>
 
 						{/* Order Offer */}
-						<div className='flex items-center space-x-1 pl-1 pr-7'>
-							{!freeDelivery ? (
-								<SparklesText
-									className='text-sm'
-									text={`Free delivery above ₹${minimumOrderCost}, add items worth ₹${
-										minimumOrderCost +
-										deliveryCost -
-										cartAmount
-									} or more to get free delivery!`}
-								/>
-							) : (
-								<SparklesText
-									className='text-sm'
-									text="Congrats! You've got free delivery 🎉"
-								/>
-							)}
-						</div>
+						{selectedArea && (
+							<div className='flex items-center space-x-1 pl-1 pr-7'>
+								{!freeDelivery ? (
+									<div className={cn('text-sm font-medium')}>
+										<span className='relative inline-block'>
+											<strong className='text-green-600'>
+												{deliveryLabel}
+											</strong>
+										</span>
+									</div>
+								) : (
+									<SparklesText
+										className='text-sm'
+										sparklesCount={15}
+										text="Congrats! You've got free delivery 🎉"
+									/>
+								)}
+							</div>
+						)}
 
 						{/* Empty Cart Button */}
 						<div className='flex items-center space-x-1 pl-1 pr-7'>
@@ -176,7 +194,7 @@ export default function CartSheet() {
 											Checkout{' '}
 											{cartAmount > 0 &&
 												`(${formatPrice(
-													cartAmount,
+													billAmount,
 													'INR'
 												)})`}
 										</Button>
