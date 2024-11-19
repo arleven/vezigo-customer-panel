@@ -89,9 +89,7 @@ export const CartProvider = ({ children }: Props) => {
 		} else {
 			setFreeDelivery(false);
 		}
-	}, [cartItems, deliveryCost]);
 
-	useEffect(() => {
 		if (totalBillAmount > 0) {
 			if (totalBillAmount < minimumOrderValue) {
 				console.log('her');

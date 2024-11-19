@@ -57,7 +57,7 @@ export default function CartSheet(props: { zones: Zone[] }) {
 	}, []);
 
 	useEffect(() => {
-		setCheckoutButtonText(`(${formatPrice(billAmount, 'INR')})`);
+		setCheckoutButtonText();
 	}, [billAmount]);
 
 	const getDeliveryCostById = (id: string) => {
@@ -75,7 +75,7 @@ export default function CartSheet(props: { zones: Zone[] }) {
 		updateDeliveryCost(costToDeliver);
 	};
 
-	const freeDeliveryText = `Delivery charges: ₹${deliveryCost}. Add items worth ₹${
+	const deliveryLabel = `Delivery charges: ₹${deliveryCost}. Add items worth ₹${
 		minimumOrderCost - cartAmount
 	} or more to get free delivery!`;
 
@@ -155,19 +155,25 @@ export default function CartSheet(props: { zones: Zone[] }) {
 						</ScrollArea>
 
 						{/* Order Offer */}
-						<div className='flex items-center space-x-1 pl-1 pr-7'>
-							{!freeDelivery ? (
-								<SparklesText
-									className='text-sm'
-									text={freeDeliveryText}
-								/>
-							) : (
-								<SparklesText
-									className='text-sm'
-									text="Congrats! You've got free delivery 🎉"
-								/>
-							)}
-						</div>
+						{selectedArea && (
+							<div className='flex items-center space-x-1 pl-1 pr-7'>
+								{!freeDelivery ? (
+									<div className={cn('text-sm font-medium')}>
+										<span className='relative inline-block'>
+											<strong className='text-green-600'>
+												{deliveryLabel}
+											</strong>
+										</span>
+									</div>
+								) : (
+									<SparklesText
+										className='text-sm'
+										sparklesCount={15}
+										text="Congrats! You've got free delivery 🎉"
+									/>
+								)}
+							</div>
+						)}
 
 						{/* Empty Cart Button */}
 						<div className='flex items-center space-x-1 pl-1 pr-7'>
@@ -196,7 +202,10 @@ export default function CartSheet(props: { zones: Zone[] }) {
 										>
 											Checkout{' '}
 											{cartAmount > 0 &&
-												checkoutButtonText}
+												`(${formatPrice(
+													billAmount,
+													'INR'
+												)})`}
 										</Button>
 									</DialogTrigger>
 								) : (
