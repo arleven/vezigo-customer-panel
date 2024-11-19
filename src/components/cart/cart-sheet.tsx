@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
 	Sheet,
 	SheetClose,
@@ -44,7 +44,6 @@ export default function CartSheet(props: { zones: Zone[] }) {
 	} = useCart();
 	const [address, setAddress] = useState('');
 	const [selectedArea, setSelectedArea] = useState('');
-	const [checkoutButtonText, setCheckoutButtonText] = useState('');
 	const minimumOrderCost = 200;
 
 	useEffect(() => {
@@ -55,10 +54,6 @@ export default function CartSheet(props: { zones: Zone[] }) {
 			}
 		}
 	}, []);
-
-	useEffect(() => {
-		setCheckoutButtonText();
-	}, [billAmount]);
 
 	const getDeliveryCostById = (id: string) => {
 		const zone = props.zones.find((loc) => loc.id === id);
