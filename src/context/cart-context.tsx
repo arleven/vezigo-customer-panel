@@ -7,34 +7,38 @@ import { createContext, useContext, useState, useEffect } from 'react';
 
 interface CartContextValue {
 	cartItems: CartItem[];
-	addToCart: (pack: Package, product: Product) => void;
-	removeFromCart: (productId: string) => void;
-	emptyCart: () => void;
-	updateCartItemQuantity: (productId: string, quantity: number) => void;
 	cartTotal: number;
 	cartAmount: number;
 	cartCount: number;
 	data: Product[];
 	freeDelivery: boolean;
 	deliveryCost: number;
-	updateDeliveryCost: (cost: number) => void;
 	billAmount: number;
+	minimumOrderValue: number;
+	addToCart: (pack: Package, product: Product) => void;
+	removeFromCart: (productId: string) => void;
+	emptyCart: () => void;
+	updateCartItemQuantity: (productId: string, quantity: number) => void;
+	updateDeliveryCost: (cost: number) => void;
+	updateMinimumOrderValue: (value: number) => void;
 }
 
 const CartContext = createContext<CartContextValue>({
 	cartItems: [],
-	addToCart: () => {},
-	removeFromCart: () => {},
-	emptyCart: () => {},
-	updateCartItemQuantity: () => {},
 	cartTotal: 0,
 	cartAmount: 0,
 	cartCount: 0,
 	data: [],
 	freeDelivery: false,
 	deliveryCost: 0,
+	billAmount: 0,
+	minimumOrderValue: 199,
+	addToCart: () => {},
+	removeFromCart: () => {},
+	emptyCart: () => {},
+	updateCartItemQuantity: () => {},
 	updateDeliveryCost: () => {},
-	billAmount: 0
+	updateMinimumOrderValue: () => {}
 });
 
 export const useCart = () => {
@@ -53,8 +57,7 @@ export const CartProvider = ({ children }: Props) => {
 	const [deliveryCost, setDeliveryCost] = useState<number>(0);
 	const [billAmount, setBillAmount] = useState<number>(0);
 	const [totalBillAmount, setTotalBillAmount] = useState<number>(0);
-
-	const minimumOrderValue = 200;
+	const [minimumOrderValue, setMinimumOrderValue] = useState<number>(0);
 
 	useEffect(() => {
 		// Fetch product data
@@ -156,22 +159,30 @@ export const CartProvider = ({ children }: Props) => {
 		setDeliveryCost(cost);
 	};
 
+	const updateMinimumOrderValue = (value: number) => {
+		console.log('value', value);
+
+		setMinimumOrderValue(value);
+	};
+
 	return (
 		<CartContext.Provider
 			value={{
 				cartItems,
-				addToCart,
-				removeFromCart,
-				emptyCart,
-				updateCartItemQuantity,
 				cartTotal,
 				cartCount,
 				data,
 				cartAmount,
 				freeDelivery,
 				deliveryCost,
+				billAmount,
+				minimumOrderValue,
+				addToCart,
+				removeFromCart,
+				emptyCart,
+				updateCartItemQuantity,
 				updateDeliveryCost,
-				billAmount
+				updateMinimumOrderValue
 			}}
 		>
 			{children}

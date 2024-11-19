@@ -60,6 +60,7 @@ export interface Config {
 	heading: string;
 	vegetablesDescription: string;
 	fruitsDescription: string;
+	minimumOrderValue: string;
 }
 
 export interface OrderItem {

@@ -1,10 +1,10 @@
+import axios from 'axios';
 import { Header } from '@/components/header';
 import { Shell } from '@/components/Shells/shell';
 import { Products } from '@/components/products';
 
 import { Config, Product } from '@/types';
 import { apiUrl } from '@/config/site-config';
-import axios from 'axios';
 
 export async function getProducts(sort?: string): Promise<Product[]> {
 	try {
@@ -68,6 +68,7 @@ export default async function ProductsPage({
 				<Products
 					products={data}
 					pageCount={pageCount}
+					minimumOrderValue={Number(config.minimumOrderValue)}
 					page={typeof page === 'string' ? page : undefined}
 					limit={typeof limit === 'string' ? limit : undefined}
 					sort={typeof sort === 'string' ? sort : undefined}

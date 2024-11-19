@@ -1,6 +1,6 @@
 'use client';
 
-import * as React from 'react';
+import { useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { ProductCard } from './product-card';
@@ -21,15 +21,22 @@ import { sortOptions } from '@/config/site-config';
 import { cn } from '@/lib/utils';
 import { setTransition } from '@/lib/transition';
 
+import { useCart } from '@/context/cart-context';
+
 interface ProductsProps {
 	products: Product[];
 	pageCount: number;
+	minimumOrderValue: number;
 	page?: string;
 	limit?: string;
 	sort?: string;
 }
 
-export function Products({ products, pageCount }: ProductsProps) {
+export function Products({
+	products,
+	minimumOrderValue,
+	pageCount
+}: ProductsProps) {
 	const router = useRouter();
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
@@ -39,8 +46,14 @@ export function Products({ products, pageCount }: ProductsProps) {
 	const limit = searchParams?.get('limit') ?? '8';
 	const sort = searchParams?.get('sort') ?? '';
 
+	const { updateMinimumOrderValue } = useCart();
+
+	useEffect(() => {
+		updateMinimumOrderValue(minimumOrderValue);
+	}, [minimumOrderValue]);
+
 	// Create query string
-	const createQueryString = React.useCallback(
+	const createQueryString = useCallback(
 		(params: Record<string, string | number | null>) => {
 			const newSearchParams = new URLSearchParams(
 				searchParams?.toString()

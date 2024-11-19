@@ -36,15 +36,15 @@ export default function CartSheet(props: { zones: Zone[] }) {
 	const {
 		cartItems,
 		cartAmount,
-		emptyCart,
 		freeDelivery,
-		updateDeliveryCost,
 		deliveryCost,
-		billAmount
+		billAmount,
+		minimumOrderValue,
+		emptyCart,
+		updateDeliveryCost
 	} = useCart();
 	const [address, setAddress] = useState('');
 	const [selectedArea, setSelectedArea] = useState('');
-	const minimumOrderCost = 200;
 
 	useEffect(() => {
 		if (typeof window !== 'undefined' && window.localStorage) {
@@ -61,17 +61,13 @@ export default function CartSheet(props: { zones: Zone[] }) {
 	};
 
 	const handleSelectChange = (value: string) => {
-		console.log('Selected Area', value);
 		setSelectedArea(value);
-
 		const costToDeliver = getDeliveryCostById(value);
-		console.log('costToDeliver', costToDeliver);
-
 		updateDeliveryCost(costToDeliver);
 	};
 
 	const deliveryLabel = `Delivery charges: ₹${deliveryCost}. Add items worth ₹${
-		minimumOrderCost - cartAmount
+		minimumOrderValue - cartAmount
 	} or more to get free delivery!`;
 
 	return (
@@ -122,7 +118,7 @@ export default function CartSheet(props: { zones: Zone[] }) {
 											key={index}
 											className='hover:bg-green-100 cursor-pointer'
 										>
-											{zone.title} (₹{zone.deliveryCost})
+											{zone.title}
 										</SelectItem>
 									)
 								)}
