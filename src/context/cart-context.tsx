@@ -74,15 +74,13 @@ export const CartProvider = ({ children }: Props) => {
 	}, []);
 
 	useEffect(() => {
-		/* const amountIsLessThanMinimumOrderValue =
-			totalBillAmount > 0 && totalBillAmount < minimumOrderValue; */
 		let tba = 0;
 		cartItems.forEach((item: any) => {
 			tba += Number(item.quantity) * Number(item.pack.price);
 			setTotalBillAmount(tba);
 		});
 
-		setCartAmount(totalBillAmount);
+		setCartAmount(tba);
 
 		if (totalBillAmount >= minimumOrderValue) {
 			setFreeDelivery(true);
@@ -92,10 +90,8 @@ export const CartProvider = ({ children }: Props) => {
 
 		if (totalBillAmount > 0) {
 			if (totalBillAmount < minimumOrderValue) {
-				console.log('her');
 				setBillAmount(cartAmount + deliveryCost);
 			} else {
-				console.log('her2');
 				setBillAmount(cartAmount);
 			}
 		}
