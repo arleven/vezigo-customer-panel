@@ -55,12 +55,6 @@ export function ProductCard({
 		}
 	});
 
-	React.useEffect(() => {
-		if (isProductInCart) {
-			console.log(isProductInCart);
-		}
-	}, [isProductInCart]);
-
 	return (
 		<Card
 			className={cn(

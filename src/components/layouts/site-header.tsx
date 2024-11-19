@@ -33,9 +33,6 @@ const SiteHeader = async () => {
 
 	const headersList = headers();
 	const host = headersList.get('X-Forwarded-Host');
-	const proto = headersList.get('X-Forwarded-Proto');
-
-	console.log('Portal:', `${proto}://${host}`);
 
 	if (host === vezigoDomain) {
 		image = vezigoLogo;

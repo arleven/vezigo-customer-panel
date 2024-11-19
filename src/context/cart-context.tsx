@@ -160,8 +160,6 @@ export const CartProvider = ({ children }: Props) => {
 	};
 
 	const updateMinimumOrderValue = (value: number) => {
-		console.log('value', value);
-
 		setMinimumOrderValue(value);
 	};
 
