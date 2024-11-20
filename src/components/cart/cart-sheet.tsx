@@ -9,19 +9,6 @@ import {
 	SheetTitle,
 	SheetTrigger
 } from '@/components/ui/sheet';
-import { Icons } from '@/components/icons';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { useCart } from '@/context/cart-context';
-import { Separator } from '@/components/ui/separator';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import SparklesText from '@/components/ui/sparkles-text';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import Ripple from '@/components/ui/ripple';
-
-import CartForm from './cart-form';
-import { CartItem } from './cart-item';
-import { cn, formatPrice } from '@/lib/utils';
 import {
 	Select,
 	SelectContent,
@@ -29,6 +16,19 @@ import {
 	SelectTrigger,
 	SelectValue
 } from '@/components/ui/select';
+import { Icons } from '@/components/icons';
+import Ripple from '@/components/ui/ripple';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { useCart } from '@/context/cart-context';
+import { Separator } from '@/components/ui/separator';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import SparklesText from '@/components/ui/sparkles-text';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+
+import CartForm from './cart-form';
+import { CartItem } from './cart-item';
+import { cn, formatPrice } from '@/lib/utils';
 
 import { Zone } from '@/types';
 
@@ -53,6 +53,20 @@ export default function CartSheet(props: { zones: Zone[] }) {
 				setAddress(JSON.parse(localAddress));
 			}
 		}
+	}, []);
+
+	useEffect(() => {
+		window.history.pushState(null, '', window.location.href);
+
+		const handlePopState = (event: any) => {
+			window.history.pushState(null, '', window.location.href);
+		};
+
+		window.addEventListener('popstate', handlePopState);
+
+		return () => {
+			window.removeEventListener('popstate', handlePopState);
+		};
 	}, []);
 
 	const getDeliveryCostById = (id: string) => {
