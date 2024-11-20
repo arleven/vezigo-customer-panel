@@ -85,6 +85,7 @@ export interface Order {
 	};
 	items: [OrderItem];
 	billAmount: string;
+	deliveryAmount: string;
 	createdAt: string;
 	orderId: string;
 }

@@ -46,14 +46,10 @@ export default async function OrderPage({ params }: OrderPageProps) {
 	const { orderId } = params;
 	const order = (await getOrder(orderId)) as Order;
 
-	const deliveryCost = formatPrice(Number(40), 'INR');
-
 	const orderDate = new Date(order.createdAt).toLocaleString([], {
 		dateStyle: 'medium',
 		timeStyle: 'medium'
 	});
-
-	const billAmount = formatPrice(Number(order.billAmount), 'INR');
 
 	return (
 		<Shell as='div' className='gap-12'>
@@ -140,8 +136,8 @@ export default async function OrderPage({ params }: OrderPageProps) {
 							</CardContent>
 						</Card>
 						<PaymentCard
-							billAmount={billAmount}
-							deliveryCost={deliveryCost}
+							billAmount={order.billAmount}
+							deliveryAmount={order.deliveryAmount}
 						/>
 					</div>
 					<div className='md:col-span-2 lg:col-span-3 xl:col-span-2 flex flex-col gap-6'>
@@ -154,7 +150,13 @@ export default async function OrderPage({ params }: OrderPageProps) {
 	);
 }
 
-const PaymentCard = (props: { billAmount: string; deliveryCost: string }) => {
+const PaymentCard = (props: { billAmount: string; deliveryAmount: string }) => {
+	const billAmount = formatPrice(Number(props.billAmount), 'INR');
+	const deliveryAmount = formatPrice(Number(props.deliveryAmount), 'INR');
+	const netTotal = formatPrice(
+		Number(props.billAmount) + Number(props.deliveryAmount ?? 0),
+		'INR'
+	);
 	return (
 		<Card>
 			<CardHeader>
@@ -166,14 +168,19 @@ const PaymentCard = (props: { billAmount: string; deliveryCost: string }) => {
 					<div className='ml-auto'>Offline</div>
 				</div>
 				<Separator />
+				<div className='flex items-center font-medium'>
+					<div>Gross Total</div>
+					<div className='ml-auto'>{billAmount}</div>
+				</div>
+				<Separator />
 				<div className='flex items-center'>
 					<div>Delivery Cost</div>
-					<div className='ml-auto'>{props.deliveryCost}</div>
+					<div className='ml-auto'>{deliveryAmount}</div>
 				</div>
 				<Separator />
 				<div className='flex items-center font-medium'>
-					<div>Total</div>
-					<div className='ml-auto'>{props.billAmount}</div>
+					<div>Net Total</div>
+					<div className='ml-auto'>{netTotal}</div>
 				</div>
 			</CardContent>
 			{/* <CardFooter className='flex items-center gap-2'>

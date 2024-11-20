@@ -40,14 +40,19 @@ export default async function OrderPage({ params }: OrderPageProps) {
 	const { orderId } = params;
 	const order = (await getOrder(orderId)) as Order;
 
-	const deliveryCost = formatPrice(Number(40), 'INR');
-
 	const orderDate = new Date(order.createdAt).toLocaleString([], {
 		dateStyle: 'medium'
 		// timeStyle: 'medium'
 	});
 
 	const billAmount = formatPrice(Number(order.billAmount), 'INR');
+
+	const deliveryCost = formatPrice(Number(order.deliveryAmount), 'INR');
+
+	const netTotal = formatPrice(
+		Number(order.billAmount) + Number(order.deliveryAmount ?? 0),
+		'INR'
+	);
 
 	return (
 		<html lang='en'>
@@ -165,6 +170,16 @@ export default async function OrderPage({ params }: OrderPageProps) {
 													<TableCell></TableCell>
 													<TableCell></TableCell>
 													<TableCell className='py-1 text-sm'>
+														Gross Total
+													</TableCell>
+													<TableCell className='py-1 text-sm text-right'>
+														{billAmount}
+													</TableCell>
+												</TableRow>
+												<TableRow className='hover:bg-inherit'>
+													<TableCell></TableCell>
+													<TableCell></TableCell>
+													<TableCell className='py-1 text-sm'>
 														Delivery Cost
 													</TableCell>
 													<TableCell className='py-1 text-sm text-right'>
@@ -175,10 +190,10 @@ export default async function OrderPage({ params }: OrderPageProps) {
 													<TableCell></TableCell>
 													<TableCell></TableCell>
 													<TableCell className='py-1 text-sm'>
-														Total
+														Net Total
 													</TableCell>
 													<TableCell className='py-1 text-sm text-right'>
-														{billAmount}
+														{netTotal}
 													</TableCell>
 												</TableRow>
 											</TableBody>
