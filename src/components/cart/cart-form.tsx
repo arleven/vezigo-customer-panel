@@ -80,7 +80,7 @@ export default function CartForm(props: any) {
 					altPhoneNumber: values.altPhone,
 					phoneNumber: values.phone,
 					address: values.address,
-					area: props.selectedArea,
+					zone: props.selectedArea,
 					notes: values.notes
 				},
 				geo: selectedPosition
