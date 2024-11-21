@@ -15,9 +15,8 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-	title: 'Sabji King',
-	description:
-		'Discover the best and fresh fruits and vegetables for all your needs'
+	title: 'Sabjiking',
+	description: 'Online Vegetable and Fruit Delivery store in Jodhpur'
 };
 
 export default function RootLayout({
