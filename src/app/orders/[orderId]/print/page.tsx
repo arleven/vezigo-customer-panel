@@ -231,6 +231,7 @@ const CustomerDetailsCard = (props: { order: Order }) => {
 					<CardTitle className='text-lg'>Address</CardTitle>
 				</CardHeader>
 				<CardContent className='text-sm'>
+					<div>Area: {props.order.userDetails.zone.title ?? ''}</div>
 					<div>{props.order.userDetails.address ?? ''}</div>
 				</CardContent>
 			</Card>

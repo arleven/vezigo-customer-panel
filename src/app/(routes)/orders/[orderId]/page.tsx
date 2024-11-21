@@ -213,6 +213,7 @@ const CustomerDetailsCard = (props: { order: Order }) => {
 					<CardTitle>Address</CardTitle>
 				</CardHeader>
 				<CardContent className='text-sm'>
+					<div>Area: {props.order.userDetails.zone.title ?? ''}</div>
 					<div>{props.order.userDetails.address ?? ''}</div>
 					<Link
 						className='mt-4 p-4 bg-green-500 hover:bg-green-600 text-white rounded-md py-3 px-4 shadow-lg inline-flex items-center gap-2 font-bold'

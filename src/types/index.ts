@@ -78,6 +78,11 @@ export interface Order {
 		phoneNumber: string;
 		address: string;
 		notes: string;
+		zone: {
+			id: string;
+			title: string;
+			deliveryCost: string;
+		};
 	};
 	geo: {
 		lat: number;
