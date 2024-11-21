@@ -58,22 +58,33 @@ export function ProductCard({
 	return (
 		<Card
 			className={cn(
-				'relative h-full rounded-3xl shadow-sm hover:shadow-md hover:shadow-green-200 bg-white p-2',
+				`relative h-full rounded-3xl shadow-sm hover:shadow-md hover:shadow-green-200 bg-white p-2 ${
+					!product.inStock ? 'sold-out-wrapper' : ''
+				}`,
 				className
 			)}
 			{...props}
 		>
 			{isProductInCart && <CartBadge />}
-			{/* eslint-disable-next-line @next/next/no-img-element */}
-			<img
-				src={product.imageUrl}
-				alt={product.title}
-				className='object-cover h-48 w-96 rounded-2xl'
-				loading='lazy'
-			/>
-			<Badge className='absolute right-4 top-[150px] justify-center hover:bg-red-600 bg-red-600 text-white font-bold text-base rounded-2xl p-2'>
-				{`₹${product?.marketPrice}`}
-			</Badge>
+			<div className='relative rounded-2xl overflow-hidden'>
+				{/* eslint-disable-next-line @next/next/no-img-element */}
+				<img
+					src={product.imageUrl}
+					alt={product.title}
+					className='object-cover h-48 w-96 rounded-2xl'
+					loading='lazy'
+				/>
+				{!product.inStock && (
+					<div className='absolute inset-0 bg-gray-600 opacity-50'></div>
+				)}
+			</div>
+			{!product.inStock ? (
+				''
+			) : (
+				<Badge className='absolute right-4 top-[150px] justify-center hover:bg-red-600 bg-red-600 text-white font-bold text-base rounded-2xl p-2'>
+					{`₹${product?.marketPrice}`}
+				</Badge>
+			)}
 			<CardContent className='grid gap-2.5 p-2'>
 				<CardTitle className='text-base'>
 					{product.title}
@@ -84,54 +95,72 @@ export function ProductCard({
 					)}
 				</CardTitle>
 			</CardContent>
+			{!product.inStock && (
+				<div>
+					{/* eslint-disable-next-line @next/next/no-img-element */}
+					<div className='sold-out font-bold'>Sold out</div>
+				</div>
+			)}
 			{showCartButton && (
 				<CardFooter className='p-1'>
 					<div className='flex w-full flex-col items-center gap-2 sm:flex-row sm:justify-between'>
-						<Dialog>
-							<DialogTrigger asChild>
-								<Button
-									size='sm'
-									className='h-8 w-full rounded-xl bg-green-500 hover:bg-green-600'
-								>
-									Add to cart
-								</Button>
-							</DialogTrigger>
-							<DialogContent className='sm:max-w-md w-10/12 rounded-lg'>
-								<DialogHeader>
-									<DialogTitle>
-										Available Packages
-									</DialogTitle>
-									<DialogDescription>
-										Select the quantity of the package you
-										want to add to your cart.
-									</DialogDescription>
-								</DialogHeader>
-								<ToggleGroup
-									variant='outline'
-									type='single'
-									className='overflow-auto justify-between sm:justify-center'
-									size={'lg'}
-								>
-									{product.packages.map((pack, index) => (
-										<DialogClose key={index}>
-											<ToggleGroupItem
-												value={String(pack.quantity)}
-												onClick={() => {
-													handleAddToCart(
-														pack,
-														product
-													);
-												}}
-											>
-												<span className='inline'>
-													{`${pack.quantity}${pack.unit}\n₹${pack.price}`}
-												</span>
-											</ToggleGroupItem>
-										</DialogClose>
-									))}
-								</ToggleGroup>
-							</DialogContent>
-						</Dialog>
+						{!product.inStock ? (
+							<Button
+								size='sm'
+								className='h-8 w-full rounded-xl bg-gray-500'
+								disabled={true}
+							>
+								Out of Stock
+							</Button>
+						) : (
+							<Dialog>
+								<DialogTrigger asChild>
+									<Button
+										size='sm'
+										className='h-8 w-full rounded-xl bg-green-500 hover:bg-green-600'
+									>
+										Add to cart
+									</Button>
+								</DialogTrigger>
+								<DialogContent className='sm:max-w-md w-10/12 rounded-lg'>
+									<DialogHeader>
+										<DialogTitle>
+											Available Packages
+										</DialogTitle>
+										<DialogDescription>
+											Select the quantity of the package
+											you want to add to your cart.
+										</DialogDescription>
+									</DialogHeader>
+									<ToggleGroup
+										variant='outline'
+										type='single'
+										className='overflow-auto justify-between sm:justify-center'
+										size={'lg'}
+									>
+										{product.packages.map((pack, index) => (
+											<DialogClose key={index}>
+												<ToggleGroupItem
+													value={String(
+														pack.quantity
+													)}
+													onClick={() => {
+														handleAddToCart(
+															pack,
+															product
+														);
+													}}
+												>
+													<span className='inline'>
+														{`${pack.quantity}${pack.unit}\n₹${pack.price}`}
+													</span>
+												</ToggleGroupItem>
+											</DialogClose>
+										))}
+									</ToggleGroup>
+								</DialogContent>
+							</Dialog>
+						)}
 					</div>
 				</CardFooter>
 			)}

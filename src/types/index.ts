@@ -47,6 +47,7 @@ export interface Product {
 	marketPrice: string;
 	packages: [Package];
 	imageUrl: string;
+	inStock: boolean;
 }
 
 export interface Zone {
