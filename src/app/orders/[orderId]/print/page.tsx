@@ -13,7 +13,7 @@ import { formatPrice } from '@/lib/utils';
 import { apiUrl } from '@/config/site-config';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 
-import sabjiKingLogo from '@/assets/sabjiking.png';
+import sabjiKingLogo from '@/assets/sabjiking-transparent.png';
 import sabjiKingQr from '@/assets/sabji-king-web-qr.png';
 
 async function getOrder(orderId: string): Promise<Order> {
@@ -61,13 +61,13 @@ export default async function OrderPage({ params }: OrderPageProps) {
 				style={{ backgroundColor: '#ffde08' }}
 			>
 				<div className='gap-12 p-4'>
-					<main className='flex flex-1 flex-col gap-4 md:gap-8'>
+					<main className='flex flex-1 flex-col'>
 						<div className='flex items-center'>
 							<div>
 								<Image
 									src={sabjiKingLogo}
-									width={200}
-									height={200}
+									width={150}
+									height={150}
 									className='rounded'
 									alt='Sabji King Logo'
 								/>
@@ -80,7 +80,7 @@ export default async function OrderPage({ params }: OrderPageProps) {
 									className='rounded ml-auto'
 									alt='Sabji King QR'
 								/>
-								<h4 className='text-right'>
+								<h4 className='mt-4 text-right'>
 									Scan the code above order again.{' '}
 								</h4>
 							</div>
