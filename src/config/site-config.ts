@@ -53,6 +53,11 @@ export const siteConfig = {
 			href: links.rickroll,
 			external: true,
 		},
+		{
+			title: "Sabjiking: Online Vegetable and Fruit Delivery store in Jodhpur",
+			href: links.rickroll,
+			external: true,
+		},
 	],
 	googleMap: {
 		apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,

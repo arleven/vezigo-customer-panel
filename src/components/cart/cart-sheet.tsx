@@ -44,7 +44,8 @@ export default function CartSheet(props: { zones: Zone[] }) {
 		updateDeliveryCost
 	} = useCart();
 	const [address, setAddress] = useState('');
-	const [selectedArea, setSelectedArea] = useState('');
+	const [selectedZone, setSelectedZone] = useState('');
+	const [selectedDeliveryTime, setSelectedDeliveryTime] = useState('');
 
 	useEffect(() => {
 		if (typeof window !== 'undefined' && window.localStorage) {
@@ -69,15 +70,25 @@ export default function CartSheet(props: { zones: Zone[] }) {
 		};
 	}, []);
 
+	useEffect(() => {
+		setSelectedDeliveryTime(deliveryTimes[0].id);
+	}, []);
+
+	const deliveryTimes = [{ id: '1', title: 'Tomorrow Morning' }];
+
 	const getDeliveryCostById = (id: string) => {
 		const zone = props.zones.find((loc) => loc.id === id);
 		return zone ? Number(zone.deliveryCost) : 0;
 	};
 
-	const handleSelectChange = (value: string) => {
-		setSelectedArea(value);
+	const handleZoneChange = (value: string) => {
+		setSelectedZone(value);
 		const costToDeliver = getDeliveryCostById(value);
 		updateDeliveryCost(costToDeliver);
+	};
+
+	const handleDeliveryTimeChange = (value: string) => {
+		setSelectedDeliveryTime(value);
 	};
 
 	const deliveryLabel = `Delivery charges: ₹${deliveryCost}. Add items worth ₹${
@@ -116,28 +127,55 @@ export default function CartSheet(props: { zones: Zone[] }) {
 			<SheetContent className='flex w-full flex-col pr-0 sm:max-w-lg'>
 				<SheetHeader className='px-1'>
 					<SheetTitle className='flex items-center gap-2'>
-						<span className='mr-2'>Deliver to</span>
-						<Select
-							onValueChange={handleSelectChange}
-							value={selectedArea}
-						>
-							<SelectTrigger className='w-[180px]'>
-								<SelectValue placeholder='Area' />
-							</SelectTrigger>
-							<SelectContent>
-								{props.zones.map(
-									(zone: Zone, index: number) => (
-										<SelectItem
-											value={zone.id}
-											key={index}
-											className='hover:bg-green-100 cursor-pointer'
-										>
-											{zone.title}
-										</SelectItem>
-									)
-								)}
-							</SelectContent>
-						</Select>
+						<div className='flex flex-col gap-1'>
+							<span className='mr-2'>Deliver to</span>
+							<Select
+								onValueChange={handleZoneChange}
+								value={selectedZone}
+							>
+								<SelectTrigger className='w-[180px]'>
+									<SelectValue placeholder='Area' />
+								</SelectTrigger>
+								<SelectContent>
+									{props.zones.map(
+										(zone: Zone, index: number) => (
+											<SelectItem
+												value={zone.id}
+												key={index}
+												className='hover:bg-green-100 cursor-pointer'
+											>
+												{zone.title}
+											</SelectItem>
+										)
+									)}
+								</SelectContent>
+							</Select>
+						</div>
+						<div className='flex flex-col gap-1'>
+							<span className='mr-2'>Deliver by</span>
+							<Select
+								onValueChange={handleDeliveryTimeChange}
+								value={selectedDeliveryTime}
+								defaultValue={deliveryTimes[0].id}
+							>
+								<SelectTrigger className='w-[180px]'>
+									<SelectValue placeholder='Time' />
+								</SelectTrigger>
+								<SelectContent>
+									{deliveryTimes.map(
+										(deliveryTime: any, index: number) => (
+											<SelectItem
+												value={deliveryTime.id}
+												key={index}
+												className='hover:bg-green-100 cursor-pointer'
+											>
+												{deliveryTime.title}
+											</SelectItem>
+										)
+									)}
+								</SelectContent>
+							</Select>
+						</div>
 					</SheetTitle>
 				</SheetHeader>
 				<Separator />
@@ -160,7 +198,7 @@ export default function CartSheet(props: { zones: Zone[] }) {
 						</ScrollArea>
 
 						{/* Order Offer */}
-						{selectedArea && (
+						{selectedZone && (
 							<div className='flex items-center space-x-1 pl-1 pr-7'>
 								{!freeDelivery ? (
 									<div className={cn('text-sm font-medium')}>
@@ -196,13 +234,13 @@ export default function CartSheet(props: { zones: Zone[] }) {
 						{/* Checkout Button */}
 						<Dialog>
 							<div className='flex items-center space-x-1 pl-1 pr-7'>
-								{selectedArea ? (
+								{selectedZone ? (
 									<DialogTrigger asChild>
 										<Button
 											className='bg-green-500 hover:bg-green-600 text-white items-center w-full mb-1 rounded-lg'
 											type='button'
 											disabled={
-												cartAmount <= 0 || !selectedArea
+												cartAmount <= 0 || !selectedZone
 											}
 										>
 											Checkout{' '}
@@ -234,7 +272,8 @@ export default function CartSheet(props: { zones: Zone[] }) {
 												close={SheetClose}
 												address={address}
 												setAddress={setAddress}
-												selectedArea={selectedArea}
+												selectedZone={selectedZone}
+												deliveryCost={deliveryCost}
 											/>
 										</div>
 									</div>

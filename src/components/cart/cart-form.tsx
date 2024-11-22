@@ -75,12 +75,13 @@ export default function CartForm(props: any) {
 			const orderDetails = {
 				items,
 				billAmount: props.cartAmount,
+				deliveryAmount: props.deliveryCost,
 				userDetails: {
 					name: values.name,
 					altPhoneNumber: values.altPhone,
 					phoneNumber: values.phone,
 					address: values.address,
-					zone: props.selectedArea,
+					zone: props.selectedZone,
 					notes: values.notes
 				},
 				geo: selectedPosition
