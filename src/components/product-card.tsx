@@ -171,7 +171,7 @@ export function ProductCard({
 const CartBadge = () => {
 	return (
 		<Badge
-			className='absolute -right-2 -top-2 justify-center hover:bg-yellow-400 bg-yellow-400 text-black rounded-full p-2'
+			className='absolute -right-2 -top-2 justify-center hover:bg-yellow-400 bg-yellow-400 text-black rounded-full p-2 z-10'
 			style={{ background: '#ffde08' }}
 		>
 			In Cart
