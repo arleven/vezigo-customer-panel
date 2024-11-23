@@ -127,7 +127,7 @@ export default function CartSheet(props: { zones: Zone[] }) {
 			<SheetContent className='flex w-full flex-col pr-0 sm:max-w-lg'>
 				<SheetHeader className='px-1'>
 					<SheetTitle className='flex items-center gap-2'>
-						<div className='flex flex-col gap-1'>
+						{/* <div className='flex flex-col gap-1'>
 							<span className='mr-2'>Deliver to</span>
 							<Select
 								onValueChange={handleZoneChange}
@@ -150,32 +150,32 @@ export default function CartSheet(props: { zones: Zone[] }) {
 									)}
 								</SelectContent>
 							</Select>
-						</div>
-						<div className='flex flex-col gap-1'>
-							<span className='mr-2'>Deliver by</span>
-							<Select
-								onValueChange={handleDeliveryTimeChange}
-								value={selectedDeliveryTime}
-								defaultValue={deliveryTimes[0].id}
-							>
-								<SelectTrigger className='w-[180px]'>
-									<SelectValue placeholder='Time' />
-								</SelectTrigger>
-								<SelectContent>
-									{deliveryTimes.map(
-										(deliveryTime: any, index: number) => (
-											<SelectItem
-												value={deliveryTime.id}
-												key={index}
-												className='hover:bg-green-100 cursor-pointer'
-											>
-												{deliveryTime.title}
-											</SelectItem>
-										)
-									)}
-								</SelectContent>
-							</Select>
-						</div>
+						</div> */}
+						{/* <div className='flex flex-col gap-1'> */}
+						<span className='mr-2'>Deliver by</span>
+						<Select
+							onValueChange={handleDeliveryTimeChange}
+							value={selectedDeliveryTime}
+							defaultValue={deliveryTimes[0].id}
+						>
+							<SelectTrigger className='w-[180px]'>
+								<SelectValue placeholder='Time' />
+							</SelectTrigger>
+							<SelectContent>
+								{deliveryTimes.map(
+									(deliveryTime: any, index: number) => (
+										<SelectItem
+											value={deliveryTime.id}
+											key={index}
+											className='hover:bg-green-100 cursor-pointer'
+										>
+											{deliveryTime.title}
+										</SelectItem>
+									)
+								)}
+							</SelectContent>
+						</Select>
+						{/* </div> */}
 					</SheetTitle>
 				</SheetHeader>
 				<Separator />
