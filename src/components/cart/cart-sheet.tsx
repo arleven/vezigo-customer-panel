@@ -127,55 +127,55 @@ export default function CartSheet(props: { zones: Zone[] }) {
 			<SheetContent className='flex w-full flex-col pr-0 sm:max-w-lg'>
 				<SheetHeader className='px-1'>
 					<SheetTitle className='flex items-center gap-2'>
-						{/* <div className='flex flex-col gap-1'>
-							<span className='mr-2'>Deliver to</span>
+						{/* <div className='flex flex-col gap-1'> */}
+						<span className='mr-2'>Deliver to</span>
+						<Select
+							onValueChange={handleZoneChange}
+							value={selectedZone}
+						>
+							<SelectTrigger className='w-[180px]'>
+								<SelectValue placeholder='Area' />
+							</SelectTrigger>
+							<SelectContent>
+								{props.zones.map(
+									(zone: Zone, index: number) => (
+										<SelectItem
+											value={zone.id}
+											key={index}
+											className='hover:bg-green-100 cursor-pointer'
+										>
+											{zone.title}
+										</SelectItem>
+									)
+								)}
+							</SelectContent>
+						</Select>
+						{/* </div>
+						<div className='flex flex-col gap-1'>
+							<span className='mr-2'>Deliver by</span>
 							<Select
-								onValueChange={handleZoneChange}
-								value={selectedZone}
+								onValueChange={handleDeliveryTimeChange}
+								value={selectedDeliveryTime}
+								defaultValue={deliveryTimes[0].id}
 							>
 								<SelectTrigger className='w-[180px]'>
-									<SelectValue placeholder='Area' />
+									<SelectValue placeholder='Time' />
 								</SelectTrigger>
 								<SelectContent>
-									{props.zones.map(
-										(zone: Zone, index: number) => (
+									{deliveryTimes.map(
+										(deliveryTime: any, index: number) => (
 											<SelectItem
-												value={zone.id}
+												value={deliveryTime.id}
 												key={index}
 												className='hover:bg-green-100 cursor-pointer'
 											>
-												{zone.title}
+												{deliveryTime.title}
 											</SelectItem>
 										)
 									)}
 								</SelectContent>
 							</Select>
 						</div> */}
-						{/* <div className='flex flex-col gap-1'> */}
-						<span className='mr-2'>Deliver by</span>
-						<Select
-							onValueChange={handleDeliveryTimeChange}
-							value={selectedDeliveryTime}
-							defaultValue={deliveryTimes[0].id}
-						>
-							<SelectTrigger className='w-[180px]'>
-								<SelectValue placeholder='Time' />
-							</SelectTrigger>
-							<SelectContent>
-								{deliveryTimes.map(
-									(deliveryTime: any, index: number) => (
-										<SelectItem
-											value={deliveryTime.id}
-											key={index}
-											className='hover:bg-green-100 cursor-pointer'
-										>
-											{deliveryTime.title}
-										</SelectItem>
-									)
-								)}
-							</SelectContent>
-						</Select>
-						{/* </div> */}
 					</SheetTitle>
 				</SheetHeader>
 				<Separator />
