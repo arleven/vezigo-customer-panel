@@ -5,7 +5,7 @@ interface ProductsLayoutProps {
 }
 
 export const metadata: Metadata = {
-	title: 'Sabjiking | Fruits',
+	title: 'SabjiKing | Fruits',
 	description: 'Online Vegetable and Fruit Delivery store in Jodhpur'
 };
 

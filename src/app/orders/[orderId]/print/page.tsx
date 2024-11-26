@@ -69,7 +69,7 @@ export default async function OrderPage({ params }: OrderPageProps) {
 									width={150}
 									height={150}
 									className='rounded'
-									alt='Sabjiking Logo'
+									alt='SabjiKing Logo'
 								/>
 							</div>
 							<div className='ml-auto'>
@@ -78,7 +78,7 @@ export default async function OrderPage({ params }: OrderPageProps) {
 									width={70}
 									height={70}
 									className='rounded ml-auto'
-									alt='Sabjiking QR'
+									alt='SabjiKing QR'
 								/>
 								<h4 className='mt-4 text-right'>
 									Scan the code above order again.{' '}

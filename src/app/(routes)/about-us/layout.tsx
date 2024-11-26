@@ -5,7 +5,7 @@ interface AboutUsLayoutProps {
 }
 
 export const metadata: Metadata = {
-	title: 'Sabjiking | About Us',
+	title: 'SabjiKing | About Us',
 	description: 'Online Vegetable and Fruit Delivery store in Jodhpur'
 };
 

@@ -29,7 +29,7 @@ const SiteHeader = async () => {
 	const sabjiKingDomain = process.env.NEXT_PUBLIC_DOMAIN_SABJI_KING as string;
 
 	let image: StaticImageData = sabjiKingLogo;
-	let title: string = 'Sabjiking';
+	let title: string = 'SabjiKing';
 
 	const headersList = headers();
 	const host = headersList.get('X-Forwarded-Host');
@@ -41,7 +41,7 @@ const SiteHeader = async () => {
 
 	if (host === sabjiKingDomain) {
 		image = sabjiKingLogo;
-		title = 'Sabjiking';
+		title = 'SabjiKing';
 	}
 
 	const zones = (await getZones()) as Zone[];

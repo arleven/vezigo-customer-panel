@@ -54,7 +54,7 @@ export const siteConfig = {
 			external: true,
 		},
 		{
-			title: "Sabjiking: Online Vegetable and Fruit Delivery store in Jodhpur",
+			title: "SabjiKing: Online Vegetable and Fruit Delivery store in Jodhpur",
 			href: links.rickroll,
 			external: true,
 		},

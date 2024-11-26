@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
+import sabjiKingLogo from '@/assets/sabjiking-transparent.png';
 import {
 	ExternalLinkIcon,
 	Facebook,
@@ -8,6 +9,7 @@ import {
 	Twitter,
 	Youtube
 } from 'lucide-react';
+import Image from 'next/image';
 
 const socialLinks = [
 	{
@@ -43,8 +45,8 @@ export default function SiteFooter() {
 			<Separator className='my-2' />
 			<div className='container mx-auto px-4'>
 				<div className='py-8 md:py-12'>
-					<div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
-						<div>
+					<div className='grid grid-cols-1 lg:grid-cols-4 sm:grid-cols-2 md:grid-cols-2 gap-8'>
+						<div id='about-us'>
 							<h2 className='text-lg font-semibold mb-4 inline-flex'>
 								About Us
 								<Link
@@ -56,14 +58,14 @@ export default function SiteFooter() {
 								</Link>
 							</h2>
 							<p className='text-sm text-muted-foreground mb-10'>
-								Sabjiking.in is Jodhpur’s go-to online store for
+								SabjiKing is Jodhpur’s go-to online store for
 								fresh fruits and vegetables, delivered right to
 								your doorstep. We ensure premium quality and
 								unmatched convenience to make healthy living
 								easier for you.
 							</p>
 						</div>
-						<div>
+						<div id='contact-us'>
 							<h2 className='text-lg font-semibold mb-4 inline-flex'>
 								Contact Us
 								<Link
@@ -79,7 +81,7 @@ export default function SiteFooter() {
 								us—we’re here to help!
 							</p>
 						</div>
-						<div>
+						<div id='connect-with-us'>
 							<h2 className='text-lg font-semibold mb-4'>
 								Connect With Us
 							</h2>
@@ -88,6 +90,7 @@ export default function SiteFooter() {
 									<li key={socialLink.title}>
 										<Link
 											href={socialLink.href}
+											target='_blank'
 											className='text-sm text-muted-foreground hover:text-primary flex items-center gap-2'
 										>
 											{socialLink.icon}
@@ -97,11 +100,19 @@ export default function SiteFooter() {
 								))}
 							</ul>
 						</div>
+						<div id='connect-with-us' className='justify-center'>
+							<Image
+								src={sabjiKingLogo}
+								width={200}
+								height={200}
+								alt='SabjiKing Logo'
+							/>
+						</div>
 					</div>
 				</div>
 				<Separator />
 				<div className='pt-6 text-center text-sm text-muted-foreground'>
-					© {new Date().getFullYear()} <strong>Sabjiking</strong>. All
+					© {new Date().getFullYear()} <strong>SabjiKing</strong>. All
 					rights reserved.
 				</div>
 			</div>

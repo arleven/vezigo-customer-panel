@@ -13,7 +13,7 @@ export default function AboutPage() {
 	return (
 		<div className='container mx-auto px-4 py-8'>
 			<h1 className='text-4xl font-bold text-center mb-8'>
-				About Sabjiking.in
+				About SabjiKing
 			</h1>
 
 			<Card className='mb-8'>
@@ -24,13 +24,12 @@ export default function AboutPage() {
 					<div className='grid md:grid-cols-2 gap-6'>
 						<div>
 							<p className='text-lg mb-4'>
-								Welcome to Sabjiking.in, your trusted online
-								store for fresh fruits and vegetables in
-								Jodhpur!
+								Welcome to SabjiKing, your trusted online store
+								for fresh fruits and vegetables in Jodhpur!
 							</p>
 
 							<p className='text-base mb-4'>
-								At Sabjiking, we’re passionate about bringing
+								At SabjiKing, we’re passionate about bringing
 								the freshest, highest-quality produce right to
 								your doorstep. Whether you’re stocking up on
 								seasonal fruits, daily veggies, or exotic
@@ -49,13 +48,13 @@ export default function AboutPage() {
 
 							<p className='text-base mb-4'>
 								Say goodbye to long grocery lines and hello to
-								the ease of shopping with Sabjiking.in. Explore,
+								the ease of shopping with SabjiKing. Explore,
 								click, and enjoy the freshness of nature without
 								stepping out of your home.
 							</p>
 
 							<p className='italic'>
-								Sabjiking — Royal freshness, right at your
+								SabjiKing — Royal freshness, right at your
 								doorstep!
 							</p>
 						</div>

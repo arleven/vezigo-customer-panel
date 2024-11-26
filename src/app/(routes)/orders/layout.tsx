@@ -5,7 +5,7 @@ interface OrdersLayoutProps {
 }
 
 export const metadata: Metadata = {
-	title: 'Sabjiking | Orders',
+	title: 'SabjiKing | Orders',
 	description: 'Online Vegetable and Fruit Delivery store in Jodhpur'
 };
 

@@ -7,7 +7,7 @@ const ContactUs = () => {
 	return (
 		<div className='container mx-auto px-4 py-8'>
 			<h1 className='text-4xl font-bold text-center mb-8'>
-				Contact Sabjiking.in
+				Contact SabjiKing
 			</h1>
 			<Card>
 				<CardHeader>
@@ -35,7 +35,7 @@ const ContactUs = () => {
 							<p>+1 (123) 456-7890</p> */}
 						</div>
 						<Link
-							href='mailto:info@sabjiking.in?subject=Inquiry for Sabjiking&body=Hello Sabjiking Team,'
+							href='mailto:info@sabjiking.in?subject=Inquiry for SabjiKing&body=Hello SabjiKing Team,'
 							className='p-2 rounded-xl text-gray-100 bg-green-500 hover:bg-green-600'
 						>
 							Contact Us

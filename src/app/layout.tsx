@@ -15,7 +15,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-	title: 'Sabjiking',
+	title: 'SabjiKing',
 	description: 'Online Vegetable and Fruit Delivery store in Jodhpur'
 };
 
