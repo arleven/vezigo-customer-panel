@@ -1,78 +1,110 @@
-import { Shell } from '../Shells/shell';
-import { siteConfig } from '@/config/site-config';
 import Link from 'next/link';
+import { Separator } from '@/components/ui/separator';
+import {
+	ExternalLinkIcon,
+	Facebook,
+	Instagram,
+	Linkedin,
+	Twitter,
+	Youtube
+} from 'lucide-react';
 
-const stats = [
+const socialLinks = [
 	{
-		id: 1,
-		name: 'Quickly deliver at your doorstep',
-		value: 'Free and next day delivery'
+		title: 'Twitter',
+		href: 'https://x.com/sabjiking',
+		icon: <Twitter size={16} />
 	},
 	{
-		id: 2,
-		name: 'Hygienic high-quality products',
-		value: '100% Satisfaction Guarantee'
+		title: 'Facebook',
+		href: 'https://facebook.com/people/Sabjikingin/61569418040193/',
+		icon: <Facebook size={16} />
 	},
-	{ id: 3, name: 'Unbeatable daily offers', value: 'Great daily deals' }
+	{
+		title: 'Instagram',
+		href: 'https://instagram.com/sabjiking.in/',
+		icon: <Instagram size={16} />
+	},
+	{
+		title: 'LinkedIn',
+		href: 'https://linkedin.com/in/sabjiking-jodhpur/',
+		icon: <Linkedin size={16} />
+	},
+	{
+		title: 'YouTube',
+		href: 'https://youtube.com/@sabjiking.jodhpur',
+		icon: <Youtube size={16} />
+	}
 ];
 
 export default function SiteFooter() {
 	return (
-		<footer className='w-full'>
-			<div className='py-24 sm:py-32'>
-				<div className='mx-auto max-w-7xl px-2 lg:px-4'>
-					<dl className='grid grid-cols-1 gap-x-8 gap-y-16 text-center lg:grid-cols-3'>
-						{stats.map((stat) => (
-							<div
-								key={stat.id}
-								className='mx-auto flex max-w-xs flex-col gap-y-4 border-2 rounded-2xl p-8'
-							>
-								<dt className='text-sm text-gray-700'>
-									{stat.name}
-								</dt>
-								<dd className='order-first text-2xl font-semibold tracking-tight text-gray-900'>
-									{stat.value}
-								</dd>
-							</div>
-						))}
-					</dl>
+		<div className='container mx-auto px-4 py-8'>
+			<Separator className='my-2' />
+			<div className='container mx-auto px-4'>
+				<div className='py-8 md:py-12'>
+					<div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
+						<div>
+							<h2 className='text-lg font-semibold mb-4 inline-flex'>
+								About Us
+								<Link
+									href='/about-us'
+									className='ml-2'
+									target='_blank'
+								>
+									<ExternalLinkIcon className='w-5' />
+								</Link>
+							</h2>
+							<p className='text-sm text-muted-foreground mb-10'>
+								Sabjiking.in is Jodhpur’s go-to online store for
+								fresh fruits and vegetables, delivered right to
+								your doorstep. We ensure premium quality and
+								unmatched convenience to make healthy living
+								easier for you.
+							</p>
+						</div>
+						<div>
+							<h2 className='text-lg font-semibold mb-4 inline-flex'>
+								Contact Us
+								<Link
+									href='/contact-us'
+									className='ml-2'
+									target='_blank'
+								>
+									<ExternalLinkIcon className='w-5' />
+								</Link>
+							</h2>
+							<p className='text-sm text-muted-foreground mb-10'>
+								Got questions or need assistance? Reach out to
+								us—we’re here to help!
+							</p>
+						</div>
+						<div>
+							<h2 className='text-lg font-semibold mb-4'>
+								Connect With Us
+							</h2>
+							<ul className='space-y-2'>
+								{socialLinks.map((socialLink) => (
+									<li key={socialLink.title}>
+										<Link
+											href={socialLink.href}
+											className='text-sm text-muted-foreground hover:text-primary flex items-center gap-2'
+										>
+											{socialLink.icon}
+											{socialLink.title}
+										</Link>
+									</li>
+								))}
+							</ul>
+						</div>
+					</div>
+				</div>
+				<Separator />
+				<div className='pt-6 text-center text-sm text-muted-foreground'>
+					© {new Date().getFullYear()} <strong>Sabjiking</strong>. All
+					rights reserved.
 				</div>
 			</div>
-
-			<Shell as='div'>
-				<section className='text-muted-foreground'>
-					<div className='justify-center gap-x-6 flex mb-4'>
-						<h2 className='text-2xl'>
-							{siteConfig.footer[1].title}
-						</h2>
-					</div>
-					<span className='space-y-3'>
-						Fresh fruits and vegetables should be a part of
-						everyone&apos;s meal, some products are hard to find in
-						the market and not possible for everyone to shop fresh
-						fruits and vegetables due to various reasons and
-						personal situations but now it is possible for everyone
-						to shop equally or according to their need whenever and
-						wherever.
-					</span>
-				</section>
-			</Shell>
-
-			{/* <Shell as='div'>
-				<section className=' text-sm text-muted-foreground'>
-					<ul className='justify-center gap-x-6 flex'>
-						{siteConfig.footer.map((item) => (
-							<div key={item.title} className='space-y-3'>
-								<li>
-									<Link href={item.href} target='_blank'>
-										{item.title}
-									</Link>
-								</li>
-							</div>
-						))}
-					</ul>
-				</section>
-			</Shell> */}
-		</footer>
+		</div>
 	);
 }
